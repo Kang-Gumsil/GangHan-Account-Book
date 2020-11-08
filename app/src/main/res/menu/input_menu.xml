@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_manual"
+        android:title="직접 입력" />
+    <item
+        android:id="@+id/item_auto"
+        android:title="영수증 인식" />
+</menu>

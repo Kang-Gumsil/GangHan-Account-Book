@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- 날짜 선택 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingHorizontal="30dp">
+
+        <NumberPicker
+            android:id="@+id/numberPicker_year"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="년"
+            android:textColor="@color/textColor"
+            android:textSize="24sp" />
+
+        <NumberPicker
+            android:id="@+id/numberPicker_month"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="월"
+            android:textColor="@color/textColor"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <!-- 확인/취소 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/pinkGray"
+            android:layout_weight="1"
+            android:layout_marginRight="2dp"
+            android:textColor="@color/textColor"
+            android:text="확인" />
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/pinkGray"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:textColor="@color/textColor"
+            android:text="취소" />
+    </LinearLayout>
+</LinearLayout>
