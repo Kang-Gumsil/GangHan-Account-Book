@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.sumAll;
+import static dankook.kanghyeyoung.capstone_2.Spec.TYPE_EXPENSE;
+import static dankook.kanghyeyoung.capstone_2.Spec.TYPE_INCOME;
 import static dankook.kanghyeyoung.capstone_2._COLOR.COLOR_TEXT;
 import static dankook.kanghyeyoung.capstone_2._FORMAT.DECIMAL_FORMAT;
 

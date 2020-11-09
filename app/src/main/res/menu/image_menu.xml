@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_camera"
+        android:title="사진 촬영" />
+    <item
+        android:id="@+id/item_gallery"
+        android:title="사진 가져오기">
+            <menu>
+                <item
+                    android:id="@+id/item_emart"
+                    android:title="이마트 영수증"/>
+                <item
+                    android:id="@+id/item_emartmall"
+                    android:title="이마트몰 영수증"/>
+            </menu>
+    </item>
+</menu>

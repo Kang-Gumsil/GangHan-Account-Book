@@ -1,6 +1,5 @@
 # Created by https://www.toptal.com/developers/gitignore/api/androidstudio,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,java
-opencv/
 
 ### Java ###
 # Compiled class file
@@ -14,6 +13,9 @@ opencv/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
+# OpenCV
+opencv/
 
 # Package Files #
 *.jar

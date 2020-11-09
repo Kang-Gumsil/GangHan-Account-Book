@@ -126,7 +126,7 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
 
             // 카테고리 이름 및 아이콘 넣기
             int catMain=item.getCatMain();
-            mTextViewCat.setText(Spec.getCatName);
+            mTextViewCat.setText(item.getCatStr());
             mImageViewCat.setImageResource(CAT_IMAGE[catMain]);
         }
     }

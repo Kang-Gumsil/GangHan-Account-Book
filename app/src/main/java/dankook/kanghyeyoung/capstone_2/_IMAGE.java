@@ -10,5 +10,12 @@ public class _IMAGE {
             R.drawable.icon_sample,
             R.drawable.icon_sample,
             R.drawable.icon_sample,
+            R.drawable.icon_sample,
+            R.drawable.icon_sample,
+            R.drawable.icon_sample,
+            R.drawable.icon_sample,
+            R.drawable.icon_sample,
+            R.drawable.icon_sample,
+            R.drawable.icon_sample,
             R.drawable.icon_sample};
 }

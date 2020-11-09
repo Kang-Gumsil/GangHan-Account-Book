@@ -1,35 +1,38 @@
 package dankook.kanghyeyoung.capstone_2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Spec {
+public class Spec implements Serializable {
 
     public static String TYPE_CLASS[]={"수입", "지출"};
     public static int TYPE_INCOME=0;
     public static int TYPE_EXPENSE=1;
 
-    public static String CAT_MAIN_CLASS[]={"식비", "패션/미용", "생활용품", "교통/차량", "주거/통신", "교육",
-                                            "취미/여행", "건강", "관계", "술/유흥", "금융", "가전/디지털",
-                                            "가구/인테리어", "기타"};
-    public static int CAT_MAIN_FOOD=0;
-    public static int CAT_MAIN_FASHION_BEAUTY=1;
-    public static int CAT_MAIN_HOUSEHOLDITEM=2;
-    public static int CAT_MAIN_TRANSPORT =3;
-    public static int CAT_MAIN_LIVING_COMMUNI=4;
-    public static int CAT_MAIN_EDUCATION=5;
-    public static int CAT_MAIN_HOBBY_TRAVEL=6;
-    public static int CAT_MAIN_HEALTH=7;
-    public static int CAT_MAIN_RELATIONSHIP=8;
-    public static int CAT_MAIN_ALCOHOL_ENTERTAIN=9;
-    public static int CAT_MAIN_FINANCE=10;
-    public static int CAT_MAIN_DIGITAL=11;
-    public static int CAT_MAIN_INTERIOR=12;
-    public static int CAT_MAIN_OTHER=13;
-    public static int CAT_MAIN_MULTI=14;
-    public static int COUNT_CAT_MAIN=15;
+    public static String CAT_MAIN_CLASS[]={"수입", "식비", "패션미용", "생활용품", "교통차량",
+                                        "주거통신", "교육", "취미여행", "건강", "관계",
+                                        "유흥", "금융", "가전디지털", "인테리어", "기타", "다중"};
+    public static int CAT_MAIN_INCOME=0;
+    public static int CAT_MAIN_FOOD=1;
+    public static int CAT_MAIN_FASHION_BEAUTY=2;
+    public static int CAT_MAIN_HOUSEHOLDITEM=3;
+    public static int CAT_MAIN_TRANSPORT =4;
+    public static int CAT_MAIN_LIVING_COMMUNI=5;
+    public static int CAT_MAIN_EDUCATION=6;
+    public static int CAT_MAIN_HOBBY_TRAVEL=7;
+    public static int CAT_MAIN_HEALTH=8;
+    public static int CAT_MAIN_RELATIONSHIP=9;
+    public static int CAT_MAIN_ENTERTAIN=10;
+    public static int CAT_MAIN_FINANCE=11;
+    public static int CAT_MAIN_DIGITAL=12;
+    public static int CAT_MAIN_INTERIOR=13;
+    public static int CAT_MAIN_OTHER=14;
+    public static int CAT_MAIN_MULTI=15;
+    public static int COUNT_EXPENSE_CAT_MAIN=15;
 
     public static String CAT_SUB_CLASS[][]={
+            {},
             {"장보기", "외식", "카페/베이커리"},
             {"패션", "미용"},
             {"욕실용품", "세탁용품", "위생용품", "주방용품", "문구", "기타"},
@@ -44,7 +47,7 @@ public class Spec {
             {"가전/디지털", "렌탈", "기타"},
             {},
             {},
-            {}
+            {},
     };
     public static int CAT_SUB_FOOD_SHOPPING=0;
     public static int CAT_SUB_FOOD_EATOUT=1;
@@ -113,20 +116,21 @@ public class Spec {
     public static int CAT_SUB_DIGITAL_OTHER=2;
     public static int COUNT_CAT_SUB_DIGITAL=3;
 
-    public static int CAT_SUB_ALCOHOL_ENTERTAIN=-1;
+    public static int CAT_SUB_ENTERTAIN=-1;
     public static int CAT_SUB_INTERIOR=-1;
     public static int CAT_SUB_OTHER=-1;
     public static int CAT_SUB_MULTI=-1;
+    public static int CAT_SUB_INCOME=0;
 
     ArrayList<SpecDetail> mSpecDetails=new ArrayList<>();
 
-    int mSpecId;
-    int mType;
-    int mPrice;
-    String mPlace;
-    int mCatMain;
-    int mCatSub;
-    Date mDate;
+    private int mSpecId;
+    private int mType;
+    private int mPrice;
+    private String mPlace;
+    private int mCatMain;
+    private int mCatSub;
+    private Date mDate;
 
     public Spec(int type, int price, String place, int catMain, int catSub, Date date) {
         this.mType = type;
@@ -147,76 +151,77 @@ public class Spec {
         this.mDate = date;
     }
 
-    // mSpecDetails에 SpecDetail 객체를 추가
+    /* mSpecDetails에 SpecDetail 객체를 추가 */
     public void addSpecDetail(SpecDetail specDetail) {
         mSpecDetails.add(specDetail);
     }
 
-    // 메인 카테고리와 서브 카테고리를 문자열로 반환 (ex: 식비-장보기, 술/유흥 )
+    /* 메인 카테고리와 서브 카테고리를 문자열로 반환 (ex: 식비-장보기, 술/유흥 ) */
     public String getCatStr() {
-          if(mCatMain!=CAT_MAIN_ALCOHOL_ENTERTAIN && mCatMain!=CAT_MAIN_INTERIOR
-              && mCatMain!=CAT_MAIN_OTHER && mCatMain!=CAT_MAIN_MULTI) {
-              return Spec.CAT_MAIN_CLASS[mCatMain]+"-"+Spec.CAT_MAIN_CLASS[mCatSub];
+          if(mCatMain!=CAT_MAIN_INCOME && mCatMain!=CAT_MAIN_ENTERTAIN &&
+             mCatMain!=CAT_MAIN_INTERIOR && mCatMain!=CAT_MAIN_OTHER &&
+             mCatMain!=CAT_MAIN_MULTI) {
+              return Spec.CAT_MAIN_CLASS[mCatMain]+"-"+Spec.CAT_SUB_CLASS[mCatMain][mCatSub];
           } else {
               return Spec.CAT_MAIN_CLASS[mCatMain];
           }
     }
 
-    // getter
-    public int getmSpecId() {
+    /* getter */
+    public int getSpecId() {
         return mSpecId;
     }
 
-    public int getmType() {
+    public int getType() {
         return mType;
     }
 
-    public int getmPrice() {
+    public int getPrice() {
         return mPrice;
     }
 
-    public String getmPlace() {
+    public String getPlace() {
         return mPlace;
     }
 
-    public int getmCatMain() {
+    public int getCatMain() {
         return mCatMain;
     }
 
-    public int getmCatSub() {
+    public int getCatSub() {
         return mCatSub;
     }
 
-    public Date getmDate() {
+    public Date getDate() {
         return mDate;
     }
 
-    public ArrayList<SpecDetail> getSpecDetail() {
-        return mSpecDetail;
+    public ArrayList<SpecDetail> getSpecDetails() {
+        return mSpecDetails;
     }
 
-    // setter
-    public void setmType(int mType) {
-        this.mType = mType;
+    /* setter */
+    public void setType(int type) {
+        this.mType = type;
     }
 
-    public void setmPrice(int mPrice) {
-        this.mPrice = mPrice;
+    public void setPrice(int price) {
+        this.mPrice = price;
     }
 
-    public void setmPlace(String mPlace) {
-        this.mPlace = mPlace;
+    public void setPlace(String place) {
+        this.mPlace = place;
     }
 
-    public void setmCatMain(int mCatMain) {
-        this.mCatMain = mCatMain;
+    public void setCatMain(int catMain) {
+        this.mCatMain = catMain;
     }
 
-    public void setmCatSub(int mCatSub) {
-        this.mCatSub = mCatSub;
+    public void setCatSub(int catSub) {
+        this.mCatSub = catSub;
     }
 
-    public void setmDate(Date mDate) {
-        this.mDate = mDate;
+    public void setDate(Date date) {
+        this.mDate = date;
     }
 }

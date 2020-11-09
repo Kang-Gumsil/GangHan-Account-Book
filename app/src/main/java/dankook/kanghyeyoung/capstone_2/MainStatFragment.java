@@ -25,8 +25,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static dankook.kanghyeyoung.capstone_2.Spec.COUNT_EXPENSE_CAT_MAIN;
 import static dankook.kanghyeyoung.capstone_2._COLOR.COLOR_TEXT_INT;
-import static dankook.kanghyeyoung.finalproject._COLOR.COLOR_TEXT_INT;
 
 public class MainStatFragment extends Fragment implements MainFragment {
     private static final String TAG = "MainStatFragment";
@@ -36,7 +36,7 @@ public class MainStatFragment extends Fragment implements MainFragment {
     MainActivity activity;
     SummaryView mSummaryView;
     RecyclerView mRecyclerView;
-    StatListAdapter mAdapter;
+    StatListAdapter mStatListAdapter;
 
     int mCurYear;
     int mCurMonth;
@@ -70,9 +70,6 @@ public class MainStatFragment extends Fragment implements MainFragment {
         mSummaryView = new SummaryView(mContext);
         FrameLayout frameLayout = rootView.findViewById(R.id.frameLayout);
         frameLayout.addView(mSummaryView);
-
-        // 초기에는 선택된 날짜를 현재 날짜로 설정
-        updateSelectedDate(mCurYear, mCurMonth);
 
         // summaryView의 날짜 설정 버튼에 onClickListener 등록
         mSummaryView.mButton.setOnClickListener(new View.OnClickListener() {
@@ -112,11 +109,11 @@ public class MainStatFragment extends Fragment implements MainFragment {
         // gridView에 레이아웃 추가
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new StatListAdapter(mSelectedYear, mSelectedMonth);
-        mRecyclerView.setAdapter(mAdapter);
+        mStatListAdapter = new StatListAdapter(mSelectedYear, mSelectedMonth);
+        mRecyclerView.setAdapter(mStatListAdapter);
 
         /* 데이터 추가 */
-        updateSelectedDate(mSelectedYear, mSelectedMonth);
+        updateSelectedDate(mCurYear, mCurMonth);
 
         return rootView;
     }
@@ -137,8 +134,9 @@ public class MainStatFragment extends Fragment implements MainFragment {
 
         /* 변동사항 업데이트 */
         ArrayList<Integer> sumOfCats = new ArrayList();
-        for (int i = 0; i < Spec.getCount_cat_main(); i++) {
-            sumOfCats.add(AccountBookDB.SumForCat(mSelectedYear, mSelectedMonth, i));
+        // 다중 카테고리, 수입 카테고리 제외
+        for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN-1; i++) {
+            sumOfCats.add(AccountBookDB.SumForCat(mSelectedYear, mSelectedMonth, i+1));
         }
 
         /* pieChart 데이터 업데이트 */
@@ -146,12 +144,12 @@ public class MainStatFragment extends Fragment implements MainFragment {
 
             // pieEntry 추가
             ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-            for (int i = 0; i < Spec.getCount_cat_main(); i++) {
+            for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN-1; i++) {
                 int tempTotal = sumOfCats.get(i);
 
                 // 합계금액이 0이 아닐때만 넣기
                 if (tempTotal != 0) {
-                    entries.add(new PieEntry(tempTotal, Spec.getCat_main_name(i)));
+                    entries.add(new PieEntry(tempTotal, Spec.CAT_MAIN_CLASS[i+1]));
                 }
             }
 
@@ -174,14 +172,14 @@ public class MainStatFragment extends Fragment implements MainFragment {
         }
 
         /* gridView 데이터 업데이트 */
-        if (mAdapter != null) {
+        if (mStatListAdapter != null) {
 
             // 카테고리별 합계금액 갖는 hashMap 만들고 업데이트
-            mAdapter.clear();
-            for (int i = 0; i < Spec.getCount_cat_main(); i++) {
-                mAdapter.addItem(new SumOfCat(i, sumOfCats.get(i)));
+            mStatListAdapter.updateDate(mSelectedYear, mSelectedMonth);
+            for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN-1; i++) {
+                mStatListAdapter.addItem(new SumOfCat(i+1, sumOfCats.get(i)));
             }
-            mAdapter.notifyDataSetChanged();
+            mStatListAdapter.notifyDataSetChanged();
         }
     }
 }
