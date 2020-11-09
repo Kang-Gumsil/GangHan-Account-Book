@@ -20,7 +20,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.selectAllSpecs;
 
 public class MainSpecFragment extends Fragment implements MainFragment{
     private static final String TAG = "MainSpecFragment";
@@ -65,9 +68,6 @@ public class MainSpecFragment extends Fragment implements MainFragment{
         mSummaryView = new SummaryView(mContext);
         FrameLayout frameLayout = rootView.findViewById(R.id.frameLayout);
         frameLayout.addView(mSummaryView);
-
-        // 초기에는 선택된 날짜를 현재 날짜로 설정
-        updateSelectedDate(mCurYear, mCurMonth);
 
         // summaryView의 날짜 설정 버튼에 onClickListener 등록
         mSummaryView.mButton.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +133,7 @@ public class MainSpecFragment extends Fragment implements MainFragment{
 
                             case R.id.item_auto:
                                 intent = new Intent(getContext(), InputAutoActivity.class);
-                                activity.startActivity(intent);
+                                activity.startActivityForResult(intent, REQUEST_CODE_FOR_INPUT);
                                 break;
                         }
                         return false;
@@ -142,6 +142,9 @@ public class MainSpecFragment extends Fragment implements MainFragment{
                 popupMenu.show();
             }
         });
+
+        /* 데이터 추가 */
+        updateSelectedDate(mCurYear, mCurMonth);
 
         return rootView;
     }
@@ -157,14 +160,17 @@ public class MainSpecFragment extends Fragment implements MainFragment{
         mSelectedYear = year;
         mSelectedMonth = month;
 
-        mSummaryView.mTextView_year.setText(mSelectedYear + "년");
-        mSummaryView.mTextView_month.setText(mSelectedMonth + "월");
+        mSummaryView.mTextViewYear.setText(mSelectedYear + "년");
+        mSummaryView.mTextViewMonth.setText(mSelectedMonth + "월");
         mSummaryView.showSummary(mSelectedYear, mSelectedMonth);
 
-        ArrayList<Spec> items = selectAllSpecs(mSelectedYear, mSelectedMonth);
-        mSpecAdapter.clear();
-        mSpecAdapter.addItems(items);
-        mSpecAdapter.notifyDataSetChanged();
+        if (mSpecAdapter !=null) {
+            ArrayList<Spec> items = selectAllSpecs(mSelectedYear, mSelectedMonth);
+            mSpecAdapter.clear();
+            mSpecAdapter.addItems(items);
+            mSpecAdapter.notifyDataSetChanged();
+            Log.d(TAG, "힝");
+        }
     }
 }
 

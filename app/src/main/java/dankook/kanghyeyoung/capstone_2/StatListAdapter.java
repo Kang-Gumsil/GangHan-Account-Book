@@ -1,5 +1,6 @@
 package dankook.kanghyeyoung.capstone_2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import static dankook.kanghyeyoung.finalproject._FORMAT.DECIMAL_FORMAT;
+import static dankook.kanghyeyoung.capstone_2._FORMAT.DECIMAL_FORMAT;
 
 public class StatListAdapter extends RecyclerView.Adapter<StatListAdapter.ViewHolder> {
     static int mSelectedYear;
@@ -57,22 +58,25 @@ public class StatListAdapter extends RecyclerView.Adapter<StatListAdapter.ViewHo
 
         public void setItem(SumOfCat item) {
             // textView_cat 설정
-            int cat_main = item.getCat();
-            textView_cat.setText(Spec.getCat_main_name(cat_main));
+            int catMain = item.getCat();
+            textView_cat.setText(Spec.CAT_MAIN_CLASS[catMain]);
 
             // textView_percentage 설정
             int total = item.getSum();
             float percentage
                     = (float) total / AccountBookDB.sumAll(mSelectedYear, mSelectedMonth, Spec.TYPE_EXPENSE) * 100;
             textView_name.setText(Math.round(percentage * 10) / 10.0 + "%");
+            Log.d("STAT", item.getCat()+", "+total+", "+AccountBookDB.sumAll(mSelectedYear, mSelectedMonth, Spec.TYPE_EXPENSE));
 
             // textView_total 설정
             textView_price.setText(DECIMAL_FORMAT.format(total) + "원");
         }
     }
 
-    public void clear() {
+    public void updateDate(int year, int month) {
         mItems.clear();
+        mSelectedYear=year;
+        mSelectedMonth=month;
     }
 
     public void addItem(SumOfCat item) {

@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.getSumOfDay;
+
 /*
     Calendar 객체,,,
     1. month
@@ -62,6 +64,9 @@ public class MainCalFragment extends Fragment implements MainFragment {
         mContext=rootView.getContext();
         activity=(MainActivity) getActivity();;
 
+        /* view 참조 */
+        mGridView = rootView.findViewById(R.id.gridView);
+
         /* 현재 날짜 설정 */
         Calendar calendar = Calendar.getInstance();
         mCurYear = calendar.get(Calendar.YEAR);
@@ -94,9 +99,6 @@ public class MainCalFragment extends Fragment implements MainFragment {
             }
         });
 
-        /* view 참조 */
-        mGridView = rootView.findViewById(R.id.gridView);
-
         return rootView;
     }
 
@@ -121,56 +123,59 @@ public class MainCalFragment extends Fragment implements MainFragment {
         mSummaryView.mTextViewMonth.setText(mSelectedMonth + "월");
         mSummaryView.showSummary(mSelectedYear, mSelectedMonth);
 
-        /* 캘린더 생성 후 년/월 설정 */
-        getCalendar(mSelectedYear, mSelectedMonth);
-        int firstDayOfWeek = mCalendar.get(Calendar.DAY_OF_WEEK); // 해당 달 1일의 요일
-        int lastDayOfMonth = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 달의 일 수
-        int lastWeekOfMonth = mCalendar.getActualMaximum(Calendar.WEEK_OF_MONTH); // 해당 달의 주 수
-        int lastDayOfWeek=-1; // 해당 달 마지막 일의 요일
-        Log.d(TAG, mSelectedYear+"년 "+mSelectedMonth+"월");
-        Log.d(TAG, "1일 : "+firstDayOfWeek+"요일");
-        Log.d(TAG, "마지막 일 : "+lastDayOfMonth+"일");
-        Log.d(TAG, "총 "+lastWeekOfMonth+"주");
+        if (mGridView!=null) {
 
-        /* 해당 달의 날짜 리스트 만들기 -> Day(날짜, 요일, 수입, 지출) */
-        ArrayList<DayInfo> dayInfos = new ArrayList<DayInfo>();
+            /* 캘린더 생성 후 년/월 설정 */
+            getCalendar(mSelectedYear, mSelectedMonth);
+            int firstDayOfWeek = mCalendar.get(Calendar.DAY_OF_WEEK); // 해당 달 1일의 요일
+            int lastDayOfMonth = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 달의 일 수
+            int lastWeekOfMonth = mCalendar.getActualMaximum(Calendar.WEEK_OF_MONTH); // 해당 달의 주 수
+            int lastDayOfWeek=-1; // 해당 달 마지막 일의 요일
+            Log.d(TAG, mSelectedYear+"년 "+mSelectedMonth+"월");
+            Log.d(TAG, "1일 : "+firstDayOfWeek+"요일");
+            Log.d(TAG, "마지막 일 : "+lastDayOfMonth+"일");
+            Log.d(TAG, "총 "+lastWeekOfMonth+"주");
 
-        /* 달력 채우기 */
-        // 1일 이전 칸 채우기
-        for (int i = 1; i <= firstDayOfWeek-1; i++) { // 2가 월요일
-            dayInfos.add(null);
+            /* 해당 달의 날짜 리스트 만들기 -> Day(날짜, 요일, 수입, 지출) */
+            ArrayList<DayInfo> dayInfos = new ArrayList<DayInfo>();
+
+            /* 달력 채우기 */
+            // 1일 이전 칸 채우기
+            for (int i = 1; i <= firstDayOfWeek-1; i++) { // 2가 월요일
+                dayInfos.add(null);
+            }
+
+            // 1일 ~ 마지막날 칸 채우기
+            for (int i = 1, j = firstDayOfWeek; i <= lastDayOfMonth; i++, j++) {
+                DayInfo dayInfo = getSumOfDay(mSelectedYear, mSelectedMonth, i);
+                dayInfos.add(dayInfo);
+                lastDayOfWeek=(j-1) % 7; // 0 : 일요일, 1 : 월요일, 2 : 화요일,,,
+            }
+
+            // 마지막날 이후 칸 채우기
+            for(int i=lastDayOfWeek+1;i<7;i++) {
+                dayInfos.add(null);
+            }
+
+            // gridView의 열 개수를 해당 달의 주 수만큼으로 수정하기
+            // 5주면 셀의 개수를 35개로, 6주면 42개로 설정하기
+            float itemHeight=0;
+            float gridViewHeight=8;
+            if (lastWeekOfMonth == 5) {
+                mGridView.setNumColumns(35);
+                itemHeight=240;
+
+            } else if (lastWeekOfMonth == 6) {
+                mGridView.setNumColumns(42);
+                itemHeight=200;
+            }
+
+            // gridView의 행 개수를 7로 설정
+            mGridView.setNumColumns(7);
+
+            /* 캘린더 어댑터에 해당 달의 날짜 리스트 삽입하고 그리드뷰에 설정 */
+            mCalendarAdapter = new CalendarAdapter(dayInfos, itemHeight);
+            mGridView.setAdapter(mCalendarAdapter);
         }
-
-        // 1일 ~ 마지막날 칸 채우기
-        for (int i = 1, j = firstDayOfWeek; i <= lastDayOfMonth; i++, j++) {
-            DayInfo dayInfo = getSumOfDay(mSelectedYear, mSelectedMonth, i);
-            dayInfos.add(dayInfo);
-            lastDayOfWeek=(j-1) % 7; // 0 : 일요일, 1 : 월요일, 2 : 화요일,,,
-        }
-
-        // 마지막날 이후 칸 채우기
-        for(int i=lastDayOfWeek+1;i<7;i++) {
-            dayInfos.add(null);
-        }
-
-        // gridView의 열 개수를 해당 달의 주 수만큼으로 수정하기
-        // 5주면 셀의 개수를 35개로, 6주면 42개로 설정하기
-        float itemHeight=0;
-        float gridViewHeight=8;
-        if (lastWeekOfMonth == 5) {
-            mGridView.setNumColumns(35);
-            itemHeight=240;
-
-        } else if (lastWeekOfMonth == 6) {
-            mGridView.setNumColumns(42);
-            itemHeight=200;
-        }
-
-        // gridView의 행 개수를 7로 설정
-        mGridView.setNumColumns(7);
-
-        /* 캘린더 어댑터에 해당 달의 날짜 리스트 삽입하고 그리드뷰에 설정 */
-        mCalendarAdapter = new CalendarAdapter(dayInfos, itemHeight);
-        mGridView.setAdapter(mCalendarAdapter);
     }
 }

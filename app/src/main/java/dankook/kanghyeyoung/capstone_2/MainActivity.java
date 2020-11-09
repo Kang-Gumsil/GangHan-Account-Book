@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
@@ -26,6 +25,9 @@ import android.widget.ImageButton;
 import com.google.android.material.tabs.TabLayout;
 import com.pedro.library.AutoPermissions;
 import org.opencv.android.OpenCVLoader;
+
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.databaseOpen;
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.delete;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         /* 내부DB 생성 */
         databaseOpen(this);
 
+        delete(10);
         /* FragmentManger 얻기 */
         mFragmentManager = getSupportFragmentManager();
         Log.d(TAG, "getFragmentManager");
