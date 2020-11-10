@@ -57,7 +57,6 @@ public class InputManualActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     Button mButtonIncome;
     Button mButtonSpend;
-    Button mButtonDate;
     Button mButtonAdd;
     Button mButtonRegister;
     ImageButton mImageButtonClose;
@@ -84,7 +83,6 @@ public class InputManualActivity extends AppCompatActivity {
         mRecyclerView=findViewById(R.id.recyclerView);
         mButtonIncome=findViewById(R.id.button_income);
         mButtonSpend=findViewById(R.id.button_spend);
-        mButtonDate=findViewById(R.id.button_date);
         mButtonAdd=findViewById(R.id.button_add);
         mButtonRegister=findViewById(R.id.button_register);
         mImageButtonClose=findViewById(R.id.imageButton_close);
@@ -177,7 +175,7 @@ public class InputManualActivity extends AppCompatActivity {
         DateTimePickerDialog.setDate(mCalendar, mTextViewDate);
 
         // 날짜 선택 다이얼로그를 호출하는 클릭 이벤트 정의
-        mButtonDate.setOnClickListener(new View.OnClickListener() {
+        mTextViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DateTimePickerDialog dateTimePickerDialog = new DateTimePickerDialog(InputManualActivity.this);
@@ -196,7 +194,7 @@ public class InputManualActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mSpecDetailAdapter = new SpecDetailAdapter();
+        mSpecDetailAdapter = new SpecDetailAdapter(this);
         mRecyclerView.setAdapter(mSpecDetailAdapter);
 
         /* 리싸이클러뷰에서 아이템간 구분선 추가 */
@@ -305,7 +303,7 @@ public class InputManualActivity extends AppCompatActivity {
                         }
 
                         String specName = inputSpecName.getText().toString();
-                        int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,",""));;
+                        int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,",""));
 
                         SpecDetail specDetailItem;
 

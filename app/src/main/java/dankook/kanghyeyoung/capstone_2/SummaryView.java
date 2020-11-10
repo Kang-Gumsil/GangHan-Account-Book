@@ -51,10 +51,6 @@ public class SummaryView extends LinearLayout {
         mTextViewIncome=findViewById(R.id.textView_income2);
         mTextViewExpense=findViewById(R.id.textView_expense2);
         mTextViewBalance=findViewById(R.id.textView_balance2);
-
-        /* down 화살표 그림 설정 */
-        ImageView imageView=findViewById(R.id.imageView_button);
-        imageView.setColorFilter(Color.parseColor(COLOR_TEXT), PorterDuff.Mode.SRC_IN);
     }
 
     /* summaryView 조회 설정 */

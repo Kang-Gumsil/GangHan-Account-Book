@@ -21,6 +21,7 @@
         <activity android:name=".InputManualActivity"></activity>
         <activity android:name=".InputAutoActivity" />
         <activity android:name=".ShowSpecActivity" />
+        <activity android:name=".HelpActivity" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
@@ -33,6 +34,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
