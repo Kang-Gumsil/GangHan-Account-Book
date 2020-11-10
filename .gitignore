@@ -15,6 +15,7 @@
 .mtj.tmp/
 
 # Python
+src/main/python
 python/
 *.py
 
