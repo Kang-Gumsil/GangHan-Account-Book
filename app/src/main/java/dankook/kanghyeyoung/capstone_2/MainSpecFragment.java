@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
 
@@ -114,32 +112,18 @@ public class MainSpecFragment extends Fragment implements MainFragment{
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         /* 내역추가 버튼 설정 */
-        Button inputButton = rootView.findViewById(R.id.button_input);
-        inputButton.setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.button_manual_input).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Layout1", "ImageButton was clicked");
-                popupMenu = new PopupMenu(getContext(), v);
-                popupMenu.getMenuInflater().inflate(R.menu.input_menu, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.item_manual:
-                                Intent intent = new Intent(getContext(), InputManualActivity.class);
-                                activity.startActivityForResult(intent, REQUEST_CODE_FOR_INPUT);
-                                break;
-
-                            case R.id.item_auto:
-                                intent = new Intent(getContext(), InputAutoActivity.class);
-                                activity.startActivityForResult(intent, REQUEST_CODE_FOR_INPUT);
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
+                Intent intent = new Intent(getContext(), InputManualActivity.class);
+                activity.startActivityForResult(intent, REQUEST_CODE_FOR_INPUT);
+            }
+        });
+        rootView.findViewById(R.id.button_auto_input).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), InputAutoActivity.class);
+                activity.startActivityForResult(intent, REQUEST_CODE_FOR_INPUT);
             }
         });
 

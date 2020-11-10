@@ -24,7 +24,6 @@ import android.widget.ImageButton;
 
 import com.google.android.material.tabs.TabLayout;
 import com.pedro.library.AutoPermissions;
-import org.opencv.android.OpenCVLoader;
 
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.databaseOpen;
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.delete;
@@ -33,21 +32,13 @@ import static dankook.kanghyeyoung.capstone_2.AccountBookDB.delete;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE_FOR_INPUT = 100;
-    private static final int REQUEST_CODE_FOR_PERMISSION=101;
+    private static final int REQUEST_CODE_FOR_PERMISSION = 101;
 
     FragmentManager mFragmentManager;
     TabLayout mTabLayout;
     ViewPager mPager;
     PagerAdapter mPagerAdapter;
 
-    /* openCV 연결 확인 */
-    static {
-        if (OpenCVLoader.initDebug()) {
-            Log.d(TAG, "openCV connection success");
-        } else {
-            Log.d(TAG, "openCV connection fail");
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +71,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
         Log.d(TAG, "set onTagSelectedListener on tabLayout");
 
@@ -97,12 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
         /* 인터넷 연결 확인 및 처리*/
         ConnectivityManager cm =
-                (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        cm.registerNetworkCallback(builder.build(), new ConnectivityManager.NetworkCallback(){
+        cm.registerNetworkCallback(builder.build(), new ConnectivityManager.NetworkCallback() {
             @Override
-            public void onAvailable(@NonNull Network network) {}
+            public void onAvailable(@NonNull Network network) {
+            }
 
             // 인터넷이 연결되지 않았을 경우 안내 메시지 띄우고 어플 종료
             @Override
@@ -116,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
                                     public void onClick(
                                             DialogInterface dialog, int id) {
                                         moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                        finishAndRemoveTask();		  // 액티비티 종료 및 태스크 리스트에서 지우기
-                                        android.os.Process.killProcess(android.os.Process.myPid());	// 앱 프로세스 종료
+                                        finishAndRemoveTask();          // 액티비티 종료 및 태스크 리스트에서 지우기
+                                        android.os.Process.killProcess(android.os.Process.myPid());    // 앱 프로세스 종료
                                     }
                                 })
                         .create()
@@ -140,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE_FOR_INPUT && resultCode == RESULT_OK) {
-            for(Fragment fragment : mFragmentManager.getFragments()) {
+            for (Fragment fragment : mFragmentManager.getFragments()) {
                 ((MainFragment) fragment).updateSelectedDate();
             }
         }

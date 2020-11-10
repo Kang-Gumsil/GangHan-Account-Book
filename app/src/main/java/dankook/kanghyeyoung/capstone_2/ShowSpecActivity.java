@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -48,11 +50,10 @@ public class ShowSpecActivity extends AppCompatActivity {
     String TAG="ShowSpecActivity";
 
     ImageButton mImageButtonClose;
-    Button mButtonIncome;
-    Button mButtonExpense;
     EditText mInputPrice;
     EditText mInputPlace;
-    TextView mButtonCat;
+    TextView mTextViewType;
+    TextView mTextViewCat;
     TextView mTextViewDate;
     Button mButtonDate;
     Button mButtonDelete;
@@ -75,16 +76,15 @@ public class ShowSpecActivity extends AppCompatActivity {
         /* view 참조 */
         RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
         mImageButtonClose = findViewById(R.id.imageButton_close);
-        mButtonIncome = findViewById(R.id.button_income);
-        mButtonExpense = findViewById(R.id.button_expense);
         mInputPrice = findViewById(R.id.editText_price);
         mInputPlace = findViewById(R.id.editText_place);
-        mButtonCat = findViewById(R.id.button_cat);
+        mTextViewCat = findViewById(R.id.textView_cat);
         mTextViewDate = findViewById(R.id.textView_date);
         mButtonDate = findViewById(R.id.button_date);
         mButtonDelete = findViewById(R.id.button_delete);
         mButtonModify = findViewById(R.id.button_modify);
         mLayoutCat = findViewById(R.id.layout_cat);
+        mTextViewType=findViewById(R.id.textView_type);
 
         /* 닫기 버튼 이벤트리스너 정의 */
         mImageButtonClose.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +98,7 @@ public class ShowSpecActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SpecDetailAdapter();
+        mAdapter = new SpecDetailAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         // 아이템 간 구분선 추가
@@ -114,41 +114,15 @@ public class ShowSpecActivity extends AppCompatActivity {
             Log.d(TAG, "specId:" + mItem.getSpecId() + ", place:" + mItem.getPlace());
         }
 
-        /* 분류 버튼 설정 */
+        /* 분류 텍스트뷰 설정 */
         if (mItem.getType() == TYPE_INCOME) {
-            mButtonIncome.setBackgroundColor(Color.parseColor(COLOR_PINK_GRAY));
+            mTextViewType.setText("수입");
             mTypeFlag = TYPE_INCOME;
             mLayoutCat.setVisibility(View.GONE);
         } else {
-            mButtonExpense.setBackgroundColor(Color.parseColor(COLOR_PINK_GRAY));
+            mTextViewType.setText("지출");
             mTypeFlag = TYPE_EXPENSE;
         }
-        // 분류 - 수입 버튼 클릭 시
-        mButtonIncome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTypeFlag == TYPE_EXPENSE) {
-                    mTypeFlag = 0;
-                    mButtonIncome.setBackgroundColor(Color.parseColor(COLOR_PINK_GRAY));
-                    mButtonExpense.setBackgroundColor(Color.parseColor("#02FFFFFF"));
-                    mLayoutCat.setVisibility(View.GONE);
-                    Log.d(TAG, "수입 버튼 선택됨");
-                }
-            }
-        });
-        // 분류 - 지출 버튼 클릭 시
-        mButtonExpense.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTypeFlag == TYPE_INCOME) {
-                    mTypeFlag = 1;
-                    mButtonExpense.setBackgroundColor(Color.parseColor(COLOR_PINK_GRAY));
-                    mButtonIncome.setBackgroundColor(Color.parseColor("#02FFFFFF"));
-                    mLayoutCat.setVisibility(View.VISIBLE);
-                    Log.d(TAG, "지출 버튼 선택됨");
-                }
-            }
-        });
 
         /* 가격 설정 */
         mInputPrice.setText(DECIMAL_FORMAT.format(mItem.getPrice()));
@@ -160,10 +134,10 @@ public class ShowSpecActivity extends AppCompatActivity {
         mInputPlace.setText(mItem.getPlace());
 
         /* 카테고리 설정 */
-        mButtonCat.setText(mItem.getCatStr());
+        mTextViewCat.setText(mItem.getCatStr());
 
         // 카테고리 - 버튼 클릭 시 재설정 위한 다이얼로그 띄움
-        mButtonCat.setOnClickListener(new View.OnClickListener() {
+        mTextViewCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ShowSpecActivity.this);
@@ -228,7 +202,7 @@ public class ShowSpecActivity extends AppCompatActivity {
                         int catSub = spinnerSubcat.getSelectedItemPosition() - 1;
                         mItem.setCatMain(catMain);
                         mItem.setCatSub(catSub);
-                        mButtonCat.setText(mItem.getCatStr());
+                        mTextViewCat.setText(mItem.getCatStr());
 
                         dialog.dismiss();
                     }
@@ -302,9 +276,24 @@ public class ShowSpecActivity extends AppCompatActivity {
                 }
                 mItem.setDate(date);
 
-                update(spec_id, mItem);
-                setResult(RESULT_OK);
-                finish();
+                if(mAdapter.getItemCount()>0) {
+                    for(int i=0;i<mAdapter.getItemCount();i++){
+                        mItem.setSpecDetail(i, mAdapter.getItem(i));
+                        Log.d("Update Test", "mAdapter.getItemCount() item mainCat:"+mAdapter.getItem(i).getCatMain());
+                    }
+                }
+
+                try {
+                    update(spec_id, mItem);
+                    setResult(RESULT_OK);
+                    finish();
+
+                } catch(SQLiteException e) {
+                    Log.d(TAG, e.toString());
+                    Toast.makeText(getApplicationContext(),
+                            "거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }

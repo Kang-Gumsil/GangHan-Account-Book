@@ -158,13 +158,13 @@ public class Spec implements Serializable {
 
     /* 메인 카테고리와 서브 카테고리를 문자열로 반환 (ex: 식비-장보기, 술/유흥 ) */
     public String getCatStr() {
-          if(mCatMain!=CAT_MAIN_INCOME && mCatMain!=CAT_MAIN_ENTERTAIN &&
-             mCatMain!=CAT_MAIN_INTERIOR && mCatMain!=CAT_MAIN_OTHER &&
-             mCatMain!=CAT_MAIN_MULTI) {
-              return Spec.CAT_MAIN_CLASS[mCatMain]+"-"+Spec.CAT_SUB_CLASS[mCatMain][mCatSub];
-          } else {
-              return Spec.CAT_MAIN_CLASS[mCatMain];
-          }
+        if (mCatMain != CAT_MAIN_INCOME && mCatMain != CAT_MAIN_ENTERTAIN &&
+                mCatMain != CAT_MAIN_INTERIOR && mCatMain != CAT_MAIN_OTHER &&
+                mCatMain != CAT_MAIN_MULTI) {
+            return Spec.CAT_MAIN_CLASS[mCatMain] + "-" + Spec.CAT_SUB_CLASS[mCatMain][mCatSub];
+        } else {
+            return Spec.CAT_MAIN_CLASS[mCatMain];
+        }
     }
 
     /* getter */
@@ -198,6 +198,10 @@ public class Spec implements Serializable {
 
     public ArrayList<SpecDetail> getSpecDetails() {
         return mSpecDetails;
+    }
+
+    public void setSpecDetail(int index, SpecDetail specDetail) {
+        this.mSpecDetails.set(index,specDetail);
     }
 
     /* setter */

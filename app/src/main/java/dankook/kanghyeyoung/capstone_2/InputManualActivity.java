@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -57,7 +58,6 @@ public class InputManualActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     Button mButtonIncome;
     Button mButtonSpend;
-    Button mButtonDate;
     Button mButtonAdd;
     Button mButtonRegister;
     ImageButton mImageButtonClose;
@@ -84,7 +84,6 @@ public class InputManualActivity extends AppCompatActivity {
         mRecyclerView=findViewById(R.id.recyclerView);
         mButtonIncome=findViewById(R.id.button_income);
         mButtonSpend=findViewById(R.id.button_spend);
-        mButtonDate=findViewById(R.id.button_date);
         mButtonAdd=findViewById(R.id.button_add);
         mButtonRegister=findViewById(R.id.button_register);
         mImageButtonClose=findViewById(R.id.imageButton_close);
@@ -117,6 +116,7 @@ public class InputManualActivity extends AppCompatActivity {
                 }
             }
         });
+
         // 분류 - 지출 버튼 클릭 시
         mButtonSpend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,11 +173,12 @@ public class InputManualActivity extends AppCompatActivity {
 
         /* 날짜 설정 */
         mCalendar = Calendar.getInstance();
+
         // 현재 시간 정보로 날짜 텍스트뷰 내용 설정
         DateTimePickerDialog.setDate(mCalendar, mTextViewDate);
 
         // 날짜 선택 다이얼로그를 호출하는 클릭 이벤트 정의
-        mButtonDate.setOnClickListener(new View.OnClickListener() {
+        mTextViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DateTimePickerDialog dateTimePickerDialog = new DateTimePickerDialog(InputManualActivity.this);
@@ -196,7 +197,7 @@ public class InputManualActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mSpecDetailAdapter = new SpecDetailAdapter();
+        mSpecDetailAdapter = new SpecDetailAdapter(this);
         mRecyclerView.setAdapter(mSpecDetailAdapter);
 
         /* 리싸이클러뷰에서 아이템간 구분선 추가 */
@@ -305,7 +306,7 @@ public class InputManualActivity extends AppCompatActivity {
                         }
 
                         String specName = inputSpecName.getText().toString();
-                        int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,",""));;
+                        int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,",""));
 
                         SpecDetail specDetailItem;
 
@@ -365,7 +366,7 @@ public class InputManualActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Spec spec = new Spec(type, price, place, catMain, catSub, date);
+                Spec spec=new Spec(type, price, place, catMain, catSub, date);
 
                 // 세부 내역 존재하는 경우, 세부 내역을 Spec의 specDetails에 추가
                 int detailSize = mSpecDetailAdapter.getItemCount();
@@ -375,12 +376,19 @@ public class InputManualActivity extends AppCompatActivity {
                     spec.addSpecDetail(specDetailItem);
                 }
 
-                int insertKey = insert(spec);
-                Log.d(TAG, "insert() 호출함");
-                Log.d(TAG, "insert결과:"+ insertKey);
+                try {
+                    int insertKey = insert(spec);
+                    Log.d(TAG, "insert() 호출함");
+                    Log.d(TAG, "insert 결과:"+ insertKey);
 
-                setResult(RESULT_OK);
-                finish();
+                    setResult(RESULT_OK);
+                    finish();
+
+                } catch(SQLiteException e) {
+                    Log.d(TAG, e.toString());
+                    Toast.makeText(getApplicationContext(),
+                            "거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
