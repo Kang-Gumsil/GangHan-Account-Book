@@ -14,8 +14,8 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# OpenCV
-opencv/
+# Python
+python/
 
 # Package Files #
 *.jar
