@@ -406,7 +406,9 @@ public class InputAutoActivity extends AppCompatActivity {
             try {
                 cal.setTime(DATE_DB_FORMAT.parse(date));
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.d(TAG, "date parseException : " + e.toString());
+
+
             }
             mTextViewDate.setText(DATE_TIME_FORMAT.format(new Date(cal.getTimeInMillis())));
 

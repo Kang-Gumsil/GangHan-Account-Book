@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.delete;
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.deleteSpecDetail;
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.update;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_ENTERTAIN;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_INCOME;
@@ -266,8 +267,10 @@ public class ShowSpecActivity extends AppCompatActivity {
         mButtonModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
+                  
+                    ArrayList<SpecDetail> tempDetails=new ArrayList<>();
+                  
                     int spec_id = mItem.getSpecId();
                     mItem.setPrice(Integer.parseInt(
                             mInputPrice.getText().toString().replaceAll("\\,", "")));
@@ -282,7 +285,7 @@ public class ShowSpecActivity extends AppCompatActivity {
                             showToast("항목을 모두 입력하세요.");
                             return;
                         }
-                        mItem.setSpecDetail(i, item);
+                        tempDetails.add(item);
                         sum+=item.getSpecPrice();
                         Log.d("Update Test", "mAdapter.getItemCount() item mainCat:" +
                                 item.getCatMain());
@@ -293,6 +296,7 @@ public class ShowSpecActivity extends AppCompatActivity {
                             return;
                         }
                     }
+                    mItem.setSpecDetails(tempDetails);
 
                     update(spec_id, mItem);
                     setResult(RESULT_OK);

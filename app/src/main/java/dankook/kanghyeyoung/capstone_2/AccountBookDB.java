@@ -76,26 +76,34 @@ public class AccountBookDB {
                 +", cat_sub="+spec.getCatSub()+", price="+spec.getPrice()+", place='"+spec.getPlace()
                 +"', date='"+DATE_DB_FORMAT.format(spec.getDate()) + "' WHERE spec_id="+specId);
 
-        if(spec.getSpecDetails().size()>0) {
-            Cursor SpecDetailCursor = mAccountDB.mDB.rawQuery("SELECT * FROM SpecDetail " +
-                    "WHERE spec_id='" + specId + "'", null);
+        mAccountDB.mDB.execSQL("DELETE FROM SpecDetail WHERE spec_id=" + specId);
 
-            int DetailRecordCount=SpecDetailCursor.getCount();
-
-            for (int j = 0; j < DetailRecordCount; j++) {
-                SpecDetailCursor.moveToNext();
-                int specDetailId = SpecDetailCursor.getInt(1);
-                SpecDetail specDetail=spec.getSpecDetails().get(j);
-                Log.d("AccountDB", "update before specDetailId="+specDetailId);
-                Log.d("AccountDB", "before update specDetail CatMain:"+specDetail.getCatMain());
-
-                mAccountDB.mDB.execSQL("UPDATE SpecDetail SET cat_main=" + specDetail.getCatMain()
-                        + ", cat_sub=" + specDetail.getCatSub() + ", spec_name='" + specDetail.getSpecName()
-                        + "', spec_price=" + specDetail.getSpecPrice() + " WHERE spec_detail_id=" + specDetailId);
-                Log.d("AccountDB", "update after specDetailId="+specDetailId+ ", cat:" + specDetail.getCatMain());
-            }
-            SpecDetailCursor.close();
+        for(SpecDetail specDetail:spec.getSpecDetails()){
+            mAccountDB.mDB.execSQL("INSERT INTO SpecDetail (spec_id, cat_main, cat_sub, spec_name, spec_price, place, date) VALUES (" +
+                    specId + ", "+ specDetail.getCatMain() + ", "+ specDetail.getCatSub() + ", '"+
+                    specDetail.getSpecName() + "', "+specDetail.getSpecPrice() + ", '"+spec.getPlace() + "', '"+spec.getDate() +"')");
         }
+
+//        if(spec.getSpecDetails().size()>0) {
+//            Cursor SpecDetailCursor = mAccountDB.mDB.rawQuery("SELECT * FROM SpecDetail " +
+//                    "WHERE spec_id='" + specId + "'", null);
+
+//            int DetailRecordCount=SpecDetailCursor.getCount();
+
+//            for (int j = 0; j < DetailRecordCount; j++) {
+//                SpecDetailCursor.moveToNext();
+//                int specDetailId = SpecDetailCursor.getInt(1);
+//                SpecDetail specDetail=spec.getSpecDetails().get(j);
+//                Log.d("AccountDB", "update before specDetailId="+specDetailId);
+//                Log.d("AccountDB", "before update specDetail CatMain:"+specDetail.getCatMain());
+//
+//                mAccountDB.mDB.execSQL("UPDATE SpecDetail SET cat_main=" + specDetail.getCatMain()
+//                        + ", cat_sub=" + specDetail.getCatSub() + ", spec_name='" + specDetail.getSpecName()
+//                        + "', spec_price=" + specDetail.getSpecPrice() + " WHERE spec_detail_id=" + specDetailId);
+//                Log.d("AccountDB", "update after specDetailId="+specDetailId+ ", cat:" + specDetail.getCatMain());
+//            }
+//            SpecDetailCursor.close();
+//        }
     }
 
     /* selectAllSpecs : 사용자가 지정한 연, 월에 대한 모든 메인 내역 ArrayList<Spec>으로 반환 */
@@ -205,7 +213,13 @@ public class AccountBookDB {
     public static void delete(int specId) {
         mAccountDB.mDB.execSQL("DELETE FROM Spec WHERE spec_id=" + specId);
         mAccountDB.mDB.execSQL("DELETE FROM SpecDetail WHERE spec_id=" + specId);
-        Log.d("AccountBookDB", "delete 호출" + specId);
+        Log.d("AccountBookDB", "delete 호출 : " + specId);
+    }
+
+    /* deleteSpecDetail : spedDetailId를 갖는 하나의 세부 내역 삭제 */
+    public static void deleteSpecDetail(int specDetailId) {
+        mAccountDB.mDB.execSQL("DELETE FROM SpecDetail WHERE spec_detail_id="+specDetailId);
+        Log.d("AccountBookDB", "deleteSpecDetail 호출 : " + specDetailId);
     }
 
     /* SumForCat : 인자로 연, 월, 카테고리를 받고, 해당 기간에 그 카테고리에 대해 지출한 금액을 합산하여 반환 */

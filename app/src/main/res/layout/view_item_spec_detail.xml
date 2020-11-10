@@ -19,7 +19,7 @@
     <EditText
         android:id="@+id/editText_specName"
         android:layout_width="0dp"
-        android:layout_weight="5"
+        android:layout_weight="4.7"
         android:layout_height="wrap_content"
         android:background="@null"
         android:gravity="center_vertical|left"
@@ -48,4 +48,14 @@
         android:textSize="13sp"
         android:text="원"
         android:textColor="@color/textColor" />
+
+    <ImageButton
+        android:id="@+id/imageButton_delete"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:padding="5dp"
+        android:background="#FFFFFFFF"
+        android:src="@drawable/icon_close" />
 </LinearLayout>

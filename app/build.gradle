@@ -31,7 +31,8 @@ android {
 
         // python 사용 - python 경로 넣어주기
         python{
-            buildPython "C:\\Users\\rmatl\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
+            buildPython "C:/Users/yhy65/AppData/Local/Programs/Python/Python37/python.exe"
+
             pip {
                 install "requests"
             }

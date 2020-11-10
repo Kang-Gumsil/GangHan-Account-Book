@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -67,6 +68,7 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
         protected TextView textViewCat;
         protected EditText inputSpecName;
         protected EditText inputSpecPrice;
+        protected ImageButton imageButtonDelete;
 
         public CustomeViewHolder(View view) {
             super(view);
@@ -74,6 +76,17 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
             this.textViewCat = view.findViewById(R.id.textView_cat);
             this.inputSpecName = view.findViewById(R.id.editText_specName);
             this.inputSpecPrice = view.findViewById(R.id.editText_specPrice);
+            this.imageButtonDelete = view.findViewById(R.id.imageButton_delete);
+
+            imageButtonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position=getAdapterPosition();
+                    mItems.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeRemoved(position,mItems.size());
+                }
+            });
 
             inputSpecName.addTextChangedListener(new TextWatcher() {
                 @Override
