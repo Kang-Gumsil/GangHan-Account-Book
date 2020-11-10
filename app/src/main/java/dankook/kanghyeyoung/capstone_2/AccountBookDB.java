@@ -75,6 +75,27 @@ public class AccountBookDB {
         mAccountDB.mDB.execSQL("UPDATE Spec SET type="+spec.getType()+", cat_main="+spec.getCatMain()
                 +", cat_sub="+spec.getCatSub()+", price="+spec.getPrice()+", place='"+spec.getPlace()
                 +"', date='"+DATE_DB_FORMAT.format(spec.getDate()) + "' WHERE spec_id="+specId);
+
+        if(spec.getSpecDetails().size()>0) {
+            Cursor SpecDetailCursor = mAccountDB.mDB.rawQuery("SELECT * FROM SpecDetail " +
+                    "WHERE spec_id='" + specId + "'", null);
+
+            int DetailRecordCount=SpecDetailCursor.getCount();
+
+            for (int j = 0; j < DetailRecordCount; j++) {
+                SpecDetailCursor.moveToNext();
+                int specDetailId = SpecDetailCursor.getInt(1);
+                SpecDetail specDetail=spec.getSpecDetails().get(j);
+                Log.d("AccountDB", "update before specDetailId="+specDetailId);
+                Log.d("AccountDB", "before update specDetail CatMain:"+specDetail.getCatMain());
+
+                mAccountDB.mDB.execSQL("UPDATE SpecDetail SET cat_main=" + specDetail.getCatMain()
+                        + ", cat_sub=" + specDetail.getCatSub() + ", spec_name='" + specDetail.getSpecName()
+                        + "', spec_price=" + specDetail.getSpecPrice() + " WHERE spec_detail_id=" + specDetailId);
+                Log.d("AccountDB", "update after specDetailId="+specDetailId+ ", cat:" + specDetail.getCatMain());
+            }
+            SpecDetailCursor.close();
+        }
     }
 
     /* selectAllSpecs : 사용자가 지정한 연, 월에 대한 모든 메인 내역 ArrayList<Spec>으로 반환 */

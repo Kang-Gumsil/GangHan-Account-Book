@@ -5,7 +5,7 @@
         android:title="사진 촬영" />
     <item
         android:id="@+id/item_gallery"
-        android:title="사진 가져오기">
+        android:title="이마트/이마트몰 선택">
             <menu>
                 <item
                     android:id="@+id/item_emart"

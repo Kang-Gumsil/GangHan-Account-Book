@@ -98,7 +98,7 @@ public class ShowSpecActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new SpecDetailAdapter();
+        mAdapter = new SpecDetailAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         // 아이템 간 구분선 추가
@@ -302,9 +302,17 @@ public class ShowSpecActivity extends AppCompatActivity {
                 }
                 mItem.setDate(date);
 
+                if(mAdapter.getItemCount()>0) {
+                    for(int i=0;i<mAdapter.getItemCount();i++){
+                        mItem.setSpecDetail(i, mAdapter.getItem(i));
+                        Log.d("Update Test", "mAdapter.getItemCount() item mainCat:"+mAdapter.getItem(i).getCatMain());
+                    }
+                }
+
                 update(spec_id, mItem);
                 setResult(RESULT_OK);
                 finish();
+
             }
         });
     }

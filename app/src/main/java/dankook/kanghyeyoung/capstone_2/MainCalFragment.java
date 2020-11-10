@@ -163,11 +163,11 @@ public class MainCalFragment extends Fragment implements MainFragment {
             float gridViewHeight=8;
             if (lastWeekOfMonth == 5) {
                 mGridView.setNumColumns(35);
-                itemHeight=240;
+                itemHeight=288;
 
             } else if (lastWeekOfMonth == 6) {
                 mGridView.setNumColumns(42);
-                itemHeight=200;
+                itemHeight=240;
             }
 
             // gridView의 행 개수를 7로 설정

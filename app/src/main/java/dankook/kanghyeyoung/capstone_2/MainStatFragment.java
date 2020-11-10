@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -106,11 +107,17 @@ public class MainStatFragment extends Fragment implements MainFragment {
         mChart.setEntryLabelColor(COLOR_TEXT_INT);
         mChart.setEntryLabelTextSize(18f);
 
-        // gridView에 레이아웃 추가
+        /* gridView에 레이아웃 추가 */
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mStatListAdapter = new StatListAdapter(mSelectedYear, mSelectedMonth);
         mRecyclerView.setAdapter(mStatListAdapter);
+
+        /* recyclerView 아이템간 구분선 추가 */
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(mRecyclerView.getContext(),
+                        new LinearLayoutManager(getContext()).getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         /* 데이터 추가 */
         updateSelectedDate(mCurYear, mCurMonth);
