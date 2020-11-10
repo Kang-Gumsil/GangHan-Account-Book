@@ -99,23 +99,31 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (!TextUtils.isEmpty(s.toString()) && !s.toString().equals(priceResult)) {
-                        priceResult = DECIMAL_FORMAT.format(
-                                Double.parseDouble(s.toString().replaceAll(",", "")));
-                        inputSpecPrice.setText(priceResult);
-                        inputSpecPrice.setSelection(priceResult.length());
+                    try {
+                        if (!TextUtils.isEmpty(s.toString()) && !s.toString().equals(priceResult)) {
+                            priceResult = DECIMAL_FORMAT.format(
+                                    Double.parseDouble(s.toString().replaceAll(",", "")));
+                            inputSpecPrice.setText(priceResult);
+                            inputSpecPrice.setSelection(priceResult.length());
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.d("SpecDetailAdapter", e.toString());
                     }
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if(!inputSpecPrice.getText().toString().isEmpty()) {
-                        int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,", ""));
-                        mItems.get(getAdapterPosition()).setSpecPrice(specPrice);
-                        Log.d("SpecDetailAdapter", "specPrice:"+mItems.get(getAdapterPosition()).getSpecPrice());
+                    try {
+                        if(!inputSpecPrice.getText().toString().isEmpty()) {
+                            int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,", ""));
+                            mItems.get(getAdapterPosition()).setSpecPrice(specPrice);
+                            Log.d("SpecDetailAdapter", "specPrice:"+mItems.get(getAdapterPosition()).getSpecPrice());
 
-                    } else {
-                        mItems.get(getAdapterPosition()).setSpecPrice(-1);
+                        } else {
+                            mItems.get(getAdapterPosition()).setSpecPrice(-1);
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.d("SpecDetailAdapter", e.toString());
                     }
                 }
             });

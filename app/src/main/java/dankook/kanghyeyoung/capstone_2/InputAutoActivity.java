@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -222,23 +223,20 @@ public class InputAutoActivity extends AppCompatActivity {
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int type = 1, catMain=0, catSub=-1;
 
-                Log.d(TAG, "mAdapter item count:" + mAdapter.getItemCount());
-                if (mAdapter.getItemCount() > 1) {
-                    catMain = 15;
-                    catSub = -1;
-                }
-
-                Spec spec=null;
-
-                /* spec(내역) 생성과 동시에 값이 입력됐는지 검사 */
                 try {
+                    int type = 1, catMain = 0, catSub = -1;
+                    if (mAdapter.getItemCount() > 1) {
+                        catMain = 15;
+                        catSub = -1;
+                    }
+
+                    /* spec(내역) 생성과 동시에 값이 입력됐는지 검사 */
                     String place = mInputPlace.getText().toString();
                     int price = Integer.parseInt(
                             mInputPrice.getText().toString().replaceAll("\\,", ""));
                     Date date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
-                    spec = new Spec(type, price, place, catMain, catSub, date);
+                    Spec spec = new Spec(type, price, place, catMain, catSub, date);
                     Log.d(TAG, "spec::type:" + type + ", price:" + price
                             + ", place:" + place + ", catMain:" + catMain + ", catSub:" + catSub);
 
@@ -247,48 +245,52 @@ public class InputAutoActivity extends AppCompatActivity {
                         return;
                     }
 
-                } catch (NumberFormatException e){
+                    int sum = 0;
+                    /* 미분류를 기타로 변경 및 입력값 존재 여부 검사 */
+                    for (SpecDetail item : mAdapter.getItems()) {
+
+                        // 카테고리를 '미분류' -> '기타'로 변경
+                        if (item.getCatMain() == -1) {
+                            item.setCatMain(14);
+                        }
+
+                        // 입력값 존재여부 검사
+                        if (item.getSpecName().isEmpty() || item.getSpecPrice() == -1) {
+                            showToast("항목을 모두 입력하세요.");
+                            return;
+                        }
+
+                        // spec에 해당 세부내역(SpecDetail) 넣기
+                        spec.addSpecDetail(item);
+                        sum += item.getSpecPrice();
+                    }
+
+                    /* spec의 price와 specDetail들의 price합이 일치하는지 검사 */
+                    if (spec.getPrice() != sum) {
+                        showToast("정확한 금액을 입력하세요.");
+                        return;
+                    }
+
+                    /* 데이터 베이스에 해당 내역(spec) 추가 */
+                    int insertKey = insert(spec);
+                    Log.d(TAG, "insert 결과:" + insertKey);
+
+                    /* activity 종료 */
+                    setResult(RESULT_OK);
+                    finish();
+
+                } catch(SQLiteException e) {
                     Log.d(TAG, e.toString());
-                    showToast("항목을 모두 입력하세요.");
+                    showToast("거래처 및 내역명에는 '(따옴표)가 들어갈 수 없습니다.");
+
+                } catch (NumberFormatException e) {
+                    Log.d(TAG, e.toString());
+                    showToast("항목을 모두 입력하세요.\n입력 값은 20억 이상일 수 없습니다.");
                     return;
 
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                int sum=0;
-                /* 미분류를 기타로 변경 및 입력값 존재 여부 검사 */
-                for (SpecDetail item : mAdapter.getItems()) {
-
-                    // 카테고리를 '미분류' -> '기타'로 변경
-                    if (item.getCatMain() == -1) {
-                        item.setCatMain(14);
-                    }
-
-                    // 입력값 존재여부 검사
-                    if(item.getSpecName().isEmpty() || item.getSpecPrice()==-1) {
-                        showToast("항목을 모두 입력하세요.");
-                        return;
-                    }
-
-                    // spec에 해당 세부내역(SpecDetail) 넣기
-                    spec.addSpecDetail(item);
-                    sum+=item.getSpecPrice();
-                }
-
-                /* spec의 price와 specDetail들의 price합이 일치하는지 검사 */
-                if(spec.getPrice()!=sum) {
-                    showToast("정확한 금액을 입력하세요.");
-                    return;
-                }
-
-                /* 데이터 베이스에 해당 내역(spec) 추가 */
-                int insertKey = insert(spec);
-                Log.d(TAG, "insert 결과:" + insertKey);
-
-                /* activity 종료 */
-                setResult(RESULT_OK);
-                finish();
             }
         });
     }
@@ -307,7 +309,7 @@ public class InputAutoActivity extends AppCompatActivity {
                 Log.d(TAG, e.toString());
             }
 
-        // 이마트몰 영수증 이미지 가져오는 경우
+            // 이마트몰 영수증 이미지 가져오는 경우
         } else if (requestCode == REQUEST_IMAGE_GET_EMARTMALL && resultCode == RESULT_OK) {
             try {
                 receiptType = EMARTMALL_RECEIPT;
@@ -316,13 +318,13 @@ public class InputAutoActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-        // 이마트 영수증 촬영하고 크롭 전인 경우
+            // 이마트 영수증 촬영하고 크롭 전인 경우
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) {
             Log.d("InputAutoActivity", "onActivityResult에서 startCrop()이전");
             receiptType = EMART_RECEIPT;
             startCrop(mPhotoUri);
 
-        // 이마트 영수증 촬영하고 크롭까지 마친 경우
+            // 이마트 영수증 촬영하고 크롭까지 마친 경우
         } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             Log.d("InputAutoActivity", "onActivityResult에서 startCrop()이후");
             Uri imageUriResultCrop = UCrop.getOutput(data);
@@ -437,8 +439,7 @@ public class InputAutoActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.d(TAG, "error from getReceiptOCR");
-            String message = "인식에 실패했습니다. 다시 한번 시도해 주세요.";
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            showToast("인식에 실패했습니다. 다시 한번 시도해 주세요.");
         }
     }
 
