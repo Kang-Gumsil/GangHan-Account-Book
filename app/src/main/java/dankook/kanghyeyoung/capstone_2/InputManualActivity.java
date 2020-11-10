@@ -368,26 +368,37 @@ public class InputManualActivity extends AppCompatActivity {
 
                 Spec spec=new Spec(type, price, place, catMain, catSub, date);
 
-                // 세부 내역 존재하는 경우, 세부 내역을 Spec의 specDetails에 추가
-                int detailSize = mSpecDetailAdapter.getItemCount();
-                Log.d("InputManualActivity", "adapter에 등록된 item의 수: " + detailSize);
-                for(int i=0; i < detailSize; i++) {
-                    SpecDetail specDetailItem = mSpecDetailAdapter.getItem(i);
-                    spec.addSpecDetail(specDetailItem);
+                /* 카테고리가 '다중'이면, 세부 내역의 입력값 검사 후, spec에 add */
+                if(catMain== CAT_MAIN_MULTI) {
+                    int sum=0;
+                    for (SpecDetail item : mSpecDetailAdapter.getItems()) {
+                        if(item.getSpecName().isEmpty() || item.getSpecPrice()==-1) {
+                            showToast("항목을 모두 입력하세요.");
+                            return;
+                        }
+
+                        // spec에 해당 세부내역(SpecDetail) 넣기
+                        spec.addSpecDetail(item);
+                        sum+=item.getSpecPrice();
+                    }
+
+                    /* spec의 price와 specDetail들의 price합이 일치하는지 검사 */
+                    if(spec.getPrice()!=sum) {
+                        showToast("정확한 금액을 입력하세요.");
+                        return;
+                    }
                 }
 
                 try {
                     int insertKey = insert(spec);
-                    Log.d(TAG, "insert() 호출함");
-                    Log.d(TAG, "insert 결과:"+ insertKey);
+                    Log.d(TAG, "insert() 결과:"+ insertKey);
 
                     setResult(RESULT_OK);
                     finish();
 
                 } catch(SQLiteException e) {
                     Log.d(TAG, e.toString());
-                    Toast.makeText(getApplicationContext(),
-                            "거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.", Toast.LENGTH_LONG).show();
+                    showToast("거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.");
                 }
             }
         });
@@ -411,4 +422,7 @@ public class InputManualActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) { }
     };
 
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
 }

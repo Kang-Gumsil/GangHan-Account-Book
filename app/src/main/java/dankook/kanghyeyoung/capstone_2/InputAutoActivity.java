@@ -222,36 +222,71 @@ public class InputAutoActivity extends AppCompatActivity {
 
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int type = 1;
-                int catMain = 0;
-                int catSub = -1;
+                int type = 1, catMain=0, catSub=-1;
+
                 Log.d(TAG, "mAdapter item count:" + mAdapter.getItemCount());
                 if (mAdapter.getItemCount() > 1) {
                     catMain = 15;
                     catSub = -1;
                 }
-                String place = mInputPlace.getText().toString();
-                int price = Integer.parseInt(mInputPrice.getText().toString().replaceAll("\\,", ""));
-                Date date = new Date();
+
+                Spec spec=null;
+
+                /* spec(내역) 생성과 동시에 값이 입력됐는지 검사 */
                 try {
-                    date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
+                    String place = mInputPlace.getText().toString();
+                    int price = Integer.parseInt(
+                            mInputPrice.getText().toString().replaceAll("\\,", ""));
+                    Date date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
+                    spec = new Spec(type, price, place, catMain, catSub, date);
+                    Log.d(TAG, "spec::type:" + type + ", price:" + price
+                            + ", place:" + place + ", catMain:" + catMain + ", catSub:" + catSub);
+
+                    if (place.isEmpty()) {
+                        showToast("항목을 모두 입력하세요.");
+                        return;
+                    }
+
+                } catch (NumberFormatException e){
+                    Log.d(TAG, e.toString());
+                    showToast("항목을 모두 입력하세요.");
+                    return;
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                Spec spec = new Spec(type, price, place, catMain, catSub, date);
-                Log.d(TAG, "spec::type:" + type + ", price:" + price + ", place:" + place + ", catMain:" + catMain + ", catSub:" + catSub);
+                int sum=0;
+                /* 미분류를 기타로 변경 및 입력값 존재 여부 검사 */
+                for (SpecDetail item : mAdapter.getItems()) {
 
-                for (int i = 0; i < mAdapter.getItemCount(); i++) {
-                    SpecDetail specDetailItem = mAdapter.getItem(i);
-                    if (specDetailItem.getCatMain() == -1)
-                        specDetailItem.setCatMain(14);
-                    spec.addSpecDetail(specDetailItem);
+                    // 카테고리를 '미분류' -> '기타'로 변경
+                    if (item.getCatMain() == -1) {
+                        item.setCatMain(14);
+                    }
+
+                    // 입력값 존재여부 검사
+                    if(item.getSpecName().isEmpty() || item.getSpecPrice()==-1) {
+                        showToast("항목을 모두 입력하세요.");
+                        return;
+                    }
+
+                    // spec에 해당 세부내역(SpecDetail) 넣기
+                    spec.addSpecDetail(item);
+                    sum+=item.getSpecPrice();
                 }
 
+                /* spec의 price와 specDetail들의 price합이 일치하는지 검사 */
+                if(spec.getPrice()!=sum) {
+                    showToast("정확한 금액을 입력하세요.");
+                    return;
+                }
+
+                /* 데이터 베이스에 해당 내역(spec) 추가 */
                 int insertKey = insert(spec);
                 Log.d(TAG, "insert 결과:" + insertKey);
 
+                /* activity 종료 */
                 setResult(RESULT_OK);
                 finish();
             }
@@ -272,7 +307,7 @@ public class InputAutoActivity extends AppCompatActivity {
                 Log.d(TAG, e.toString());
             }
 
-            // 이마트몰 영수증 이미지 가져오는 경우
+        // 이마트몰 영수증 이미지 가져오는 경우
         } else if (requestCode == REQUEST_IMAGE_GET_EMARTMALL && resultCode == RESULT_OK) {
             try {
                 receiptType = EMARTMALL_RECEIPT;
@@ -281,13 +316,13 @@ public class InputAutoActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            // 이마트 영수증 촬영하고 크롭 전인 경우
+        // 이마트 영수증 촬영하고 크롭 전인 경우
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE) {
             Log.d("InputAutoActivity", "onActivityResult에서 startCrop()이전");
             receiptType = EMART_RECEIPT;
             startCrop(mPhotoUri);
 
-            // 이마트 영수증 촬영하고 크롭까지 마친 경우
+        // 이마트 영수증 촬영하고 크롭까지 마친 경우
         } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             Log.d("InputAutoActivity", "onActivityResult에서 startCrop()이후");
             Uri imageUriResultCrop = UCrop.getOutput(data);
@@ -314,12 +349,6 @@ public class InputAutoActivity extends AppCompatActivity {
     private void startCrop(@NonNull Uri uri) {
         String destinationFileName = "temp.jpg";
 
-        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
-        uCrop.withOptions(getCropOptions());
-        uCrop.start(this);
-    }
-
-    private UCrop.Options getCropOptions() {
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(100);
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
@@ -328,7 +357,9 @@ public class InputAutoActivity extends AppCompatActivity {
         options.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
 
-        return options;
+        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
+        uCrop.withOptions(options);
+        uCrop.start(this);
     }
 
     /* jpg 파일을 만들어서 File return */
@@ -357,7 +388,6 @@ public class InputAutoActivity extends AppCompatActivity {
             PyObject obj3 = module.callAttr("extractDate", obj);
             PyObject obj4 = module.callAttr("extractProduct", obj);
             PyObject obj5 = module.callAttr("extractTotalPrice", obj);
-
 
             String totalPriceTemp = obj5.toString(); // 총 합계 금액 설정
             totalPriceTemp = totalPriceTemp.replaceFirst("[,.]", ""); // ','나 '.' 제거
@@ -404,12 +434,12 @@ public class InputAutoActivity extends AppCompatActivity {
                     addToAdapter(rawName, documentName, Integer.parseInt(priceArr[i]));
                 }
             }
+
         } catch (Exception e) {
             Log.d(TAG, "error from getReceiptOCR");
             String message = "인식에 실패했습니다. 다시 한번 시도해 주세요.";
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
-
     }
 
     /* 제품명으로 카테고리 찾고, 세부내역에 넣기 */
@@ -480,4 +510,8 @@ public class InputAutoActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
         }
     };
+
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
 }
