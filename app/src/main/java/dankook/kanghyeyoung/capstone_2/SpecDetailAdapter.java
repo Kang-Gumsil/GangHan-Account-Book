@@ -81,10 +81,15 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
             imageButtonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position=getAdapterPosition();
-                    mItems.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeRemoved(position,mItems.size());
+                    try {
+                        int position=getAdapterPosition();
+                        mItems.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeRemoved(position,mItems.size());
+
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
