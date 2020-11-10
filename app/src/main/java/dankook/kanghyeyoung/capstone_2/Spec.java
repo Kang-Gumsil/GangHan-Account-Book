@@ -204,6 +204,10 @@ public class Spec implements Serializable {
         this.mSpecDetails.set(index,specDetail);
     }
 
+    public void setSpecDetails(ArrayList<SpecDetail> mSpecDetails) {
+        this.mSpecDetails = mSpecDetails;
+    }
+
     /* setter */
     public void setType(int type) {
         this.mType = type;
