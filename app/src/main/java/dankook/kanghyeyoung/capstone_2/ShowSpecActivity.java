@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.delete;
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.deleteSpecDetail;
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.update;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_CLASS;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_ENTERTAIN;
@@ -275,12 +276,12 @@ public class ShowSpecActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 mItem.setDate(date);
+                Log.d("Update Test", "mItem의 SpecDetail 아이템 개수:" + mItem.getSpecDetails().size());
+                Log.d("Update Test", "mAdapter의 SpecDetail 아이템 개수:" + mAdapter.getItemCount());
 
-                if(mAdapter.getItemCount()>0) {
-                    for(int i=0;i<mAdapter.getItemCount();i++){
-                        mItem.setSpecDetail(i, mAdapter.getItem(i));
-                        Log.d("Update Test", "mAdapter.getItemCount() item mainCat:"+mAdapter.getItem(i).getCatMain());
-                    }
+                mItem.getSpecDetails().clear();
+                for(SpecDetail item : mAdapter.getItems()) {
+                    mItem.getSpecDetails().add(item);
                 }
 
                 try {

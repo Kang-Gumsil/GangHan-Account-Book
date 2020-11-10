@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.chaquo.python' // python 사용
 
 android {
     compileSdkVersion 30
@@ -12,6 +14,28 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // python 소스 폴더 부여
+        sourceSets{
+            main{
+                python{
+                    srcDirs = ["src/main/python"]
+
+                }
+            }
+        }
+        // python 사용
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+
+        // python 사용 - python 경로 넣어주기
+        python{
+            buildPython "C:/Users/yhy65/AppData/Local/Programs/Python/Python37/python.exe"
+            pip {
+                install "requests"
+            }
+        }
     }
 
     buildTypes {
@@ -41,5 +65,10 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0' // pieChart
     implementation 'com.github.pedroSG94:AutoPermissions:1.0.3' // 위험권한 허용
+    implementation 'com.github.yalantis:ucrop:2.2.6' // crop
+
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-firestore:21.2.1'
 
 }

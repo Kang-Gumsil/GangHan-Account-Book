@@ -60,6 +60,10 @@ public class SpecDetail implements Serializable {
     }
 
     /* getter */
+    public int getSpecDetailId() {
+        return mSpecDetailId;
+    }
+
     public int getCatMain() {
         return mCatMain;
     }
