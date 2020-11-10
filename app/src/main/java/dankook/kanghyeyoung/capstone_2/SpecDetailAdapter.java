@@ -90,26 +90,56 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
 
             inputSpecName.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {  }
 
                 @Override
                 public void afterTextChanged(Editable s) {
                     String specName=inputSpecName.getText().toString();
-                    if(!specName.isEmpty()){
-                        mItems.get(getAdapterPosition()).setSpecName(specName);
-                        Log.d("SpecDetailAdapter", mItems.get(getAdapterPosition()).getSpecName());
-                    }
+                    mItems.get(getAdapterPosition()).setSpecName(specName);
+                    Log.d("SpecDetailAdapter", mItems.get(getAdapterPosition()).getSpecName());
 
                 }
             });
-            inputSpecPrice.addTextChangedListener(textWatcher);
+
+            inputSpecPrice.addTextChangedListener(new TextWatcher() {
+                String priceResult;
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try {
+                        if (!TextUtils.isEmpty(s.toString()) && !s.toString().equals(priceResult)) {
+                            priceResult = DECIMAL_FORMAT.format(
+                                    Double.parseDouble(s.toString().replaceAll(",", "")));
+                            inputSpecPrice.setText(priceResult);
+                            inputSpecPrice.setSelection(priceResult.length());
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.d("SpecDetailAdapter", e.toString());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    try {
+                        if(!inputSpecPrice.getText().toString().isEmpty()) {
+                            int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,", ""));
+                            mItems.get(getAdapterPosition()).setSpecPrice(specPrice);
+                            Log.d("SpecDetailAdapter", "specPrice:"+mItems.get(getAdapterPosition()).getSpecPrice());
+
+                        } else {
+                            mItems.get(getAdapterPosition()).setSpecPrice(-1);
+                        }
+                    } catch (NumberFormatException e) {
+                        Log.d("SpecDetailAdapter", e.toString());
+                    }
+                }
+            });
 
             textViewCat.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
@@ -205,35 +235,9 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
             // inputSpecPrice 설정
             inputSpecPrice.setText(DECIMAL_FORMAT.format(item.getSpecPrice()));
         }
-
-        TextWatcher textWatcher=new TextWatcher() {
-            String priceResult;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s.toString()) && !s.toString().equals(priceResult)) {
-                    priceResult = DECIMAL_FORMAT.format(Double.parseDouble(s.toString().replaceAll(",", "")));
-                    inputSpecPrice.setText(priceResult);
-                    inputSpecPrice.setSelection(priceResult.length());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(!inputSpecPrice.getText().toString().isEmpty()) {
-                    int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,", ""));
-                    mItems.get(getAdapterPosition()).setSpecPrice(specPrice);
-                    Log.d("SpecDetailAdapter", "specPrice:"+mItems.get(getAdapterPosition()).getSpecPrice());
-                }
-            }
-        };
     }
 
-        /* 리싸이클러뷰 어댑터 초기화 */
+    /* 리싸이클러뷰 어댑터 초기화 */
     public void clear() {
         mItems.clear();
     }

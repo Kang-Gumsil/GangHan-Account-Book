@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -34,16 +33,13 @@ import java.util.Date;
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.delete;
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.deleteSpecDetail;
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.update;
-import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_CLASS;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_ENTERTAIN;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_INCOME;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_INTERIOR;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_MULTI;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_OTHER;
-import static dankook.kanghyeyoung.capstone_2.Spec.CAT_SUB_CLASS;
 import static dankook.kanghyeyoung.capstone_2.Spec.TYPE_EXPENSE;
 import static dankook.kanghyeyoung.capstone_2.Spec.TYPE_INCOME;
-import static dankook.kanghyeyoung.capstone_2._COLOR.COLOR_PINK_GRAY;
 import static dankook.kanghyeyoung.capstone_2._FORMAT.DATE_TIME_FORMAT;
 import static dankook.kanghyeyoung.capstone_2._FORMAT.DECIMAL_FORMAT;
 
@@ -85,7 +81,7 @@ public class ShowSpecActivity extends AppCompatActivity {
         mButtonDelete = findViewById(R.id.button_delete);
         mButtonModify = findViewById(R.id.button_modify);
         mLayoutCat = findViewById(R.id.layout_cat);
-        mTextViewType=findViewById(R.id.textView_type);
+        mTextViewType = findViewById(R.id.textView_type);
 
         /* 닫기 버튼 이벤트리스너 정의 */
         mImageButtonClose.setOnClickListener(new View.OnClickListener() {
@@ -138,79 +134,85 @@ public class ShowSpecActivity extends AppCompatActivity {
         mTextViewCat.setText(mItem.getCatStr());
 
         // 카테고리 - 버튼 클릭 시 재설정 위한 다이얼로그 띄움
-        mTextViewCat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ShowSpecActivity.this);
-                View view = LayoutInflater.from(ShowSpecActivity.this)
-                        .inflate(R.layout.dialog_category_select, null, false);
-                builder.setView(view);
+        if (mItem.getCatMain()!= CAT_MAIN_MULTI) {
+            mTextViewCat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ShowSpecActivity.this);
+                    View view = LayoutInflater.from(ShowSpecActivity.this)
+                            .inflate(R.layout.dialog_category_select, null, false);
+                    builder.setView(view);
 
-                // 다이얼로그 레이아웃의 view 참조
-                final Button buttonRegister = view.findViewById(R.id.button_register);
-                final Button buttonCancel = view.findViewById(R.id.button_cancel);
-                final Spinner spinnerCat = view.findViewById(R.id.spinner_cat);
-                final Spinner spinnerSubcat = view.findViewById(R.id.spinner_subcat);
-                final LinearLayout layoutSubcat = view.findViewById(R.id.layout_subcat);
+                    // 다이얼로그 레이아웃의 view 참조
+                    final Button buttonRegister = view.findViewById(R.id.button_register);
+                    final Button buttonCancel = view.findViewById(R.id.button_cancel);
+                    final Spinner spinnerCat = view.findViewById(R.id.spinner_cat);
+                    final Spinner spinnerSubcat = view.findViewById(R.id.spinner_subcat);
+                    final LinearLayout layoutSubcat = view.findViewById(R.id.layout_subcat);
 
-                final AlertDialog dialog = builder.create();
+                    final AlertDialog dialog = builder.create();
 
-                // 서브 카테고리가 존재하는 메인 카테고리 선택 시 서브 카테고리 스피너도 나타나도록 함
-                spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                        String mainCatStr = spinnerCat.getSelectedItem().toString();
-                        if (position == 0) {
-                            onNothingSelected(adapterView);
-                        } else {
-                            if (position!=CAT_MAIN_ENTERTAIN && position!=CAT_MAIN_INTERIOR
-                                    && position!=CAT_MAIN_OTHER && position!=CAT_MAIN_MULTI
-                                    && position!=CAT_MAIN_INCOME) {
-                                layoutSubcat.setVisibility(View.VISIBLE);
+                    // 서브 카테고리가 존재하는 메인 카테고리 선택 시 서브 카테고리 스피너도 나타나도록 함
+                    spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                            String mainCatStr = spinnerCat.getSelectedItem().toString();
+                            if (position == 0) {
+                                onNothingSelected(adapterView);
                             } else {
-                                layoutSubcat.setVisibility(View.GONE);
+                                if (position != CAT_MAIN_ENTERTAIN && position != CAT_MAIN_INTERIOR
+                                        && position != CAT_MAIN_OTHER && position != CAT_MAIN_MULTI
+                                        && position != CAT_MAIN_INCOME) {
+                                    layoutSubcat.setVisibility(View.VISIBLE);
+                                } else {
+                                    layoutSubcat.setVisibility(View.GONE);
+                                }
+                                // mainCatStr에 해당하는 카테고리의 서브 카테고리 array id값을 가져옴
+                                int subCatArrayId = getResources().getIdentifier(mainCatStr, "array", getApplicationContext().getPackageName());
+
+                                // subCatArray에 대한 서브 카테고리 스피너
+                                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
+                                        (getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,
+                                                getResources().getStringArray(subCatArrayId));
+                                spinnerSubcat.setAdapter(spinnerArrayAdapter);
                             }
-                            // mainCatStr에 해당하는 카테고리의 서브 카테고리 array id값을 가져옴
-                            int subCatArrayId = getResources().getIdentifier(mainCatStr, "array", getApplicationContext().getPackageName());
-
-                            // subCatArray에 대한 서브 카테고리 스피너
-                            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                                    (getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,
-                                            getResources().getStringArray(subCatArrayId));
-                            spinnerSubcat.setAdapter(spinnerArrayAdapter);
                         }
-                    }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
 
-                    }
-                });
+                        }
+                    });
 
-                // 취소 버튼 누를 시 다이얼로그 사라짐
-                buttonCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+                    // 취소 버튼 누를 시 다이얼로그 사라짐
+                    buttonCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
 
-                // 카테고리 텍스트 재설정
-                buttonRegister.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int catMain = spinnerCat.getSelectedItemPosition();
-                        int catSub = spinnerSubcat.getSelectedItemPosition() - 1;
-                        mItem.setCatMain(catMain);
-                        mItem.setCatSub(catSub);
-                        mTextViewCat.setText(mItem.getCatStr());
+                    // 카테고리 텍스트 재설정
+                    buttonRegister.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int catMain = spinnerCat.getSelectedItemPosition();
+                            int catSub = spinnerSubcat.getSelectedItemPosition() - 1;
+                            if(mItem.getType()==1 && catMain==0) {
+                                showToast("항목을 모두 입력하세요.");
+                                return;
+                            }
+                            mItem.setCatMain(catMain);
+                            mItem.setCatSub(catSub);
+                            mTextViewCat.setText(mItem.getCatStr());
 
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
-        });
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+        }
 
         /* 날짜 설정 */
         mTextViewDate.setText(DATE_TIME_FORMAT.format(mItem.getDate()));
@@ -265,36 +267,53 @@ public class ShowSpecActivity extends AppCompatActivity {
         mButtonModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int spec_id = mItem.getSpecId();
-                mItem.setType(mTypeFlag);
-                mItem.setPrice(Integer.parseInt(mInputPrice.getText().toString().replaceAll("\\,","")));
-                mItem.setPlace(mInputPlace.getText().toString());
-                Date date = new Date();
                 try {
-                    date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                mItem.setDate(date);
-                Log.d("Update Test", "mItem의 SpecDetail 아이템 개수:" + mItem.getSpecDetails().size());
-                Log.d("Update Test", "mAdapter의 SpecDetail 아이템 개수:" + mAdapter.getItemCount());
+                  
+                    ArrayList<SpecDetail> tempDetails=new ArrayList<>();
+                  
+                    int spec_id = mItem.getSpecId();
+                    mItem.setPrice(Integer.parseInt(
+                            mInputPrice.getText().toString().replaceAll("\\,", "")));
+                    mItem.setPlace(mInputPlace.getText().toString());
+                    Date date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
+                    mItem.setDate(date);
 
-                mItem.getSpecDetails().clear();
-                for(SpecDetail item : mAdapter.getItems()) {
-                    mItem.getSpecDetails().add(item);
-                }
+                    int sum=0;
+                    for (int i = 0; i < mAdapter.getItemCount(); i++) {
+                        SpecDetail item=mAdapter.getItem(i);
+                        if(item.getSpecName().isEmpty() || item.getSpecPrice()==-1) {
+                            showToast("항목을 모두 입력하세요.");
+                            return;
+                        }
+                        tempDetails.add(item);
+                        sum+=item.getSpecPrice();
+                        Log.d("Update Test", "mAdapter.getItemCount() item mainCat:" +
+                                item.getCatMain());
+                    }
+                    if (mItem.getCatMain()== CAT_MAIN_MULTI) {
+                        if(mItem.getPrice()!=sum) {
+                            showToast("정확한 금액을 입력하세요.");
+                            return;
+                        }
+                    }
+                    mItem.setSpecDetails(tempDetails);
 
-                try {
                     update(spec_id, mItem);
                     setResult(RESULT_OK);
                     finish();
 
                 } catch(SQLiteException e) {
                     Log.d(TAG, e.toString());
-                    Toast.makeText(getApplicationContext(),
-                            "거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.", Toast.LENGTH_LONG).show();
-                }
+                    showToast("거래처 및 내역명에는 '(따옴표)가 들어갈 수 없습니다.");
 
+                } catch (NumberFormatException e) {
+                    Log.d(TAG, e.toString());
+                    showToast("항목을 모두 입력하세요.\n입력 값은 20억 이상일 수 없습니다.");
+                    return;
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -318,4 +337,7 @@ public class ShowSpecActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) { }
     };
 
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
 }

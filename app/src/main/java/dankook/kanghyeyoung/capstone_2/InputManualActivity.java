@@ -290,7 +290,6 @@ public class InputManualActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int detailCat = (int)(spinnerDetailCat.getSelectedItemId());
 
-
                         if(detailCat==0 || inputSpecName.getText().toString().equals("") ||
                                 inputSpecPrice.getText().toString().equals("") ||
                                 ((detailCat==CAT_MAIN_FOOD||detailCat==CAT_MAIN_FASHION_BEAUTY||
@@ -298,10 +297,9 @@ public class InputManualActivity extends AppCompatActivity {
                                   detailCat==CAT_MAIN_LIVING_COMMUNI||detailCat==CAT_MAIN_EDUCATION||
                                   detailCat==CAT_MAIN_HOBBY_TRAVEL||detailCat==CAT_MAIN_HEALTH||
                                   detailCat==CAT_MAIN_RELATIONSHIP||detailCat==CAT_MAIN_FINANCE||
-                                  detailCat==CAT_MAIN_DIGITAL) && (spinnerDetailSubcat.getSelectedItemPosition()-1 == -1)))
-                        {
+                                  detailCat==CAT_MAIN_DIGITAL) && (spinnerDetailSubcat.getSelectedItemPosition()-1 == -1))) {
                             Log.d(TAG, "detailCat="+detailCat);
-                            Toast.makeText(getApplicationContext(), "항목을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
+                            showToast("항목을 모두 입력하세요.");
                             return;
                         }
 
@@ -334,8 +332,9 @@ public class InputManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int catMain=0;
                 if(mTypeFlag==-1) {
-                    Toast.makeText(getApplicationContext(), "분류/지출 항목을 선택하세요.", Toast.LENGTH_SHORT).show();
+                    showToast("항목을 모두 입력하세요.");
                     return;
+
                 } else if(mTypeFlag==1) {
                     catMain=mSpinnerCat.getSelectedItemPosition();
                     if (mInputPrice.getText().toString().equals("") || mSpinnerCat.getSelectedItemPosition() == 0
@@ -346,7 +345,7 @@ public class InputManualActivity extends AppCompatActivity {
                             catMain == CAT_MAIN_HOBBY_TRAVEL || catMain == CAT_MAIN_HEALTH ||
                             catMain == CAT_MAIN_RELATIONSHIP || catMain == CAT_MAIN_FINANCE ||
                             catMain == CAT_MAIN_DIGITAL) && (mSpinnerSubCat.getSelectedItemPosition() - 1 == -1))) {
-                        Toast.makeText(getApplicationContext(), "항목을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
+                        showToast("항목을 모두 입력하세요.");
                         return;
                     }
                 }
@@ -355,39 +354,53 @@ public class InputManualActivity extends AppCompatActivity {
                         + "\n카테고리:" + mSpinnerCat.getSelectedItem().toString()
                         + "\n날짜:" + mTextViewDate.getText());
 
-                int type = mTypeFlag;
-                int price = Integer.parseInt(mInputPrice.getText().toString().replaceAll("\\,",""));
-                String place = mInputPlace.getText().toString();
-                int catSub = mSpinnerSubCat.getSelectedItemPosition()-1;
-                Date date = new Date();
                 try {
-                    date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                    int type = mTypeFlag;
+                    int price = Integer.parseInt(mInputPrice.getText().toString().replaceAll("\\,",""));
+                    String place = mInputPlace.getText().toString();
+                    int catSub = mSpinnerSubCat.getSelectedItemPosition()-1;
+                    Date date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
 
-                Spec spec=new Spec(type, price, place, catMain, catSub, date);
+                    Spec spec=new Spec(type, price, place, catMain, catSub, date);
 
-                // 세부 내역 존재하는 경우, 세부 내역을 Spec의 specDetails에 추가
-                int detailSize = mSpecDetailAdapter.getItemCount();
-                Log.d("InputManualActivity", "adapter에 등록된 item의 수: " + detailSize);
-                for(int i=0; i < detailSize; i++) {
-                    SpecDetail specDetailItem = mSpecDetailAdapter.getItem(i);
-                    spec.addSpecDetail(specDetailItem);
-                }
+                    /* 카테고리가 '다중'이면, 세부 내역의 입력값 검사 후, spec에 add */
+                    if(catMain== CAT_MAIN_MULTI) {
+                        int sum=0;
+                        for (SpecDetail item : mSpecDetailAdapter.getItems()) {
+                            if(item.getSpecName().isEmpty() || item.getSpecPrice()==-1) {
+                                showToast("항목을 모두 입력하세요.");
+                                return;
+                            }
 
-                try {
+                            // spec에 해당 세부내역(SpecDetail) 넣기
+                            spec.addSpecDetail(item);
+                            sum+=item.getSpecPrice();
+                        }
+
+                        /* spec의 price와 specDetail들의 price합이 일치하는지 검사 */
+                        if(spec.getPrice()!=sum) {
+                            showToast("정확한 금액을 입력하세요.");
+                            return;
+                        }
+                    }
+
                     int insertKey = insert(spec);
-                    Log.d(TAG, "insert() 호출함");
-                    Log.d(TAG, "insert 결과:"+ insertKey);
+                    Log.d(TAG, "insert() 결과:"+ insertKey);
 
                     setResult(RESULT_OK);
                     finish();
 
                 } catch(SQLiteException e) {
                     Log.d(TAG, e.toString());
-                    Toast.makeText(getApplicationContext(),
-                            "거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.", Toast.LENGTH_LONG).show();
+                    showToast("거래처 및 내역명에는 '(따옴표)가 들어갈 수 없습니다.");
+
+                } catch (NumberFormatException e) {
+                    Log.d(TAG, e.toString());
+                    showToast("항목을 모두 입력하세요.\n입력 값은 20억 이상일 수 없습니다.");
+                    return;
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -401,7 +414,8 @@ public class InputManualActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if(!TextUtils.isEmpty(s.toString()) && !s.toString().equals(mPriceResult)) {
-                mPriceResult = DECIMAL_FORMAT.format(Double.parseDouble(s.toString().replaceAll(",", "")));
+                mPriceResult = DECIMAL_FORMAT.format(
+                        Double.parseDouble(s.toString().replaceAll(",", "")));
                 mInputPrice.setText(mPriceResult);
                 mInputPrice.setSelection(mPriceResult.length());
             }
@@ -411,4 +425,7 @@ public class InputManualActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) { }
     };
 
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
 }
