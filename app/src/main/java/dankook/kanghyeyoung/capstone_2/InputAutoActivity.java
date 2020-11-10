@@ -225,11 +225,7 @@ public class InputAutoActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 try {
-                    int type = 1, catMain = 0, catSub = -1;
-                    if (mAdapter.getItemCount() > 1) {
-                        catMain = 15;
-                        catSub = -1;
-                    }
+                    int type = 1, catMain = 15, catSub = -1;
 
                     /* spec(내역) 생성과 동시에 값이 입력됐는지 검사 */
                     String place = mInputPlace.getText().toString();
@@ -289,6 +285,9 @@ public class InputAutoActivity extends AppCompatActivity {
                     return;
 
                 } catch (ParseException e) {
+                    e.printStackTrace();
+
+                } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
             }

@@ -401,6 +401,9 @@ public class InputManualActivity extends AppCompatActivity {
 
                 } catch (ParseException e) {
                     e.printStackTrace();
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    e.printStackTrace();
                 }
             }
         });
