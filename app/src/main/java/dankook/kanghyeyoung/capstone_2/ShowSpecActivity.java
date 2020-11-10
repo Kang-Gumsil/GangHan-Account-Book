@@ -84,7 +84,7 @@ public class ShowSpecActivity extends AppCompatActivity {
         mButtonDelete = findViewById(R.id.button_delete);
         mButtonModify = findViewById(R.id.button_modify);
         mLayoutCat = findViewById(R.id.layout_cat);
-        mTextViewType=findViewById(R.id.textView_type);
+        mTextViewType = findViewById(R.id.textView_type);
 
         /* 닫기 버튼 이벤트리스너 정의 */
         mImageButtonClose.setOnClickListener(new View.OnClickListener() {
@@ -162,9 +162,9 @@ public class ShowSpecActivity extends AppCompatActivity {
                         if (position == 0) {
                             onNothingSelected(adapterView);
                         } else {
-                            if (position!=CAT_MAIN_ENTERTAIN && position!=CAT_MAIN_INTERIOR
-                                    && position!=CAT_MAIN_OTHER && position!=CAT_MAIN_MULTI
-                                    && position!=CAT_MAIN_INCOME) {
+                            if (position != CAT_MAIN_ENTERTAIN && position != CAT_MAIN_INTERIOR
+                                    && position != CAT_MAIN_OTHER && position != CAT_MAIN_MULTI
+                                    && position != CAT_MAIN_INCOME) {
                                 layoutSubcat.setVisibility(View.VISIBLE);
                             } else {
                                 layoutSubcat.setVisibility(View.GONE);
@@ -200,6 +200,10 @@ public class ShowSpecActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int catMain = spinnerCat.getSelectedItemPosition();
                         int catSub = spinnerSubcat.getSelectedItemPosition() - 1;
+                        if(mItem.getType()==1 && catMain==0) {
+                            showToast("항목을 모두 입력하세요.");
+                            return;
+                        }
                         mItem.setCatMain(catMain);
                         mItem.setCatSub(catSub);
                         mTextViewCat.setText(mItem.getCatStr());
@@ -264,22 +268,35 @@ public class ShowSpecActivity extends AppCompatActivity {
         mButtonModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 int spec_id = mItem.getSpecId();
-                mItem.setType(mTypeFlag);
-                mItem.setPrice(Integer.parseInt(mInputPrice.getText().toString().replaceAll("\\,","")));
+                mItem.setPrice(Integer.parseInt(
+                        mInputPrice.getText().toString().replaceAll("\\,", "")));
                 mItem.setPlace(mInputPlace.getText().toString());
-                Date date = new Date();
                 try {
-                    date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
+                    Date date = DATE_TIME_FORMAT.parse(mTextViewDate.getText().toString());
+                    mItem.setDate(date);
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                mItem.setDate(date);
 
-                if(mAdapter.getItemCount()>0) {
-                    for(int i=0;i<mAdapter.getItemCount();i++){
-                        mItem.setSpecDetail(i, mAdapter.getItem(i));
-                        Log.d("Update Test", "mAdapter.getItemCount() item mainCat:"+mAdapter.getItem(i).getCatMain());
+                int sum=0;
+                for (int i = 0; i < mAdapter.getItemCount(); i++) {
+                    SpecDetail item=mAdapter.getItem(i);
+                    if(item.getSpecName().isEmpty() || item.getSpecPrice()==-1) {
+                        showToast("항목을 모두 입력하세요.");
+                        return;
+                    }
+                    mItem.setSpecDetail(i, item);
+                    sum+=item.getSpecPrice();
+                    Log.d("Update Test", "mAdapter.getItemCount() item mainCat:" +
+                            item.getCatMain());
+                }
+                if (mItem.getCatMain()== CAT_MAIN_MULTI) {
+                    if(mItem.getPrice()!=sum) {
+                        showToast("정확한 금액을 입력하세요.");
+                        return;
                     }
                 }
 
@@ -288,12 +305,11 @@ public class ShowSpecActivity extends AppCompatActivity {
                     setResult(RESULT_OK);
                     finish();
 
-                } catch(SQLiteException e) {
+                } catch (SQLiteException e) {
                     Log.d(TAG, e.toString());
                     Toast.makeText(getApplicationContext(),
                             "거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
     }
@@ -317,4 +333,7 @@ public class ShowSpecActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) { }
     };
 
+    private void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
 }

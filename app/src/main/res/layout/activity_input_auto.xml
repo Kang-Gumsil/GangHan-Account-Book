@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:gravity="right"
-                        android:inputType="number"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
