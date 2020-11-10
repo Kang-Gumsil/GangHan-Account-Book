@@ -16,7 +16,7 @@
 
 # Python
 python/
-*./py
+*.py
 
 # Package Files #
 *.jar
