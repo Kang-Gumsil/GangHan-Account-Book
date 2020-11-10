@@ -13,21 +13,26 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/logo_app"
+        android:roundIcon="@drawable/logo_app_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InputManualActivity"></activity>
-        <activity android:name=".InputAutoActivity" />
-        <activity android:name=".ShowSpecActivity" />
-        <activity android:name=".HelpActivity" />
+        <activity android:name=".InputManualActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".InputAutoActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ShowSpecActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".HelpActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +43,8 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

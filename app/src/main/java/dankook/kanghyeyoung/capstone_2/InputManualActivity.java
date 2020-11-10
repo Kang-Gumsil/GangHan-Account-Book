@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -115,6 +116,7 @@ public class InputManualActivity extends AppCompatActivity {
                 }
             }
         });
+
         // 분류 - 지출 버튼 클릭 시
         mButtonSpend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +173,7 @@ public class InputManualActivity extends AppCompatActivity {
 
         /* 날짜 설정 */
         mCalendar = Calendar.getInstance();
+
         // 현재 시간 정보로 날짜 텍스트뷰 내용 설정
         DateTimePickerDialog.setDate(mCalendar, mTextViewDate);
 
@@ -363,7 +366,7 @@ public class InputManualActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Spec spec = new Spec(type, price, place, catMain, catSub, date);
+                Spec spec=new Spec(type, price, place, catMain, catSub, date);
 
                 // 세부 내역 존재하는 경우, 세부 내역을 Spec의 specDetails에 추가
                 int detailSize = mSpecDetailAdapter.getItemCount();
@@ -373,12 +376,19 @@ public class InputManualActivity extends AppCompatActivity {
                     spec.addSpecDetail(specDetailItem);
                 }
 
-                int insertKey = insert(spec);
-                Log.d(TAG, "insert() 호출함");
-                Log.d(TAG, "insert결과:"+ insertKey);
+                try {
+                    int insertKey = insert(spec);
+                    Log.d(TAG, "insert() 호출함");
+                    Log.d(TAG, "insert 결과:"+ insertKey);
 
-                setResult(RESULT_OK);
-                finish();
+                    setResult(RESULT_OK);
+                    finish();
+
+                } catch(SQLiteException e) {
+                    Log.d(TAG, e.toString());
+                    Toast.makeText(getApplicationContext(),
+                            "거래처 및 내역명에는 ' 또는 \"가 들어갈 수 없습니다.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">capstone_2</string>
+    <string name="app_name">강한 가계부</string>
 
     <string-array name="spinnerMain">
         <item>미분류</item>
