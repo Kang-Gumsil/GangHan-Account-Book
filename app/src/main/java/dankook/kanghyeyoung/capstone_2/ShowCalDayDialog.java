@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.getDaySpec;
+
 public class ShowCalDayDialog extends Dialog {
     private final static String TAG = "ShowCalDayDialog";
 
@@ -67,7 +69,7 @@ public class ShowCalDayDialog extends Dialog {
         mRecyclerView.setLayoutManager(layoutManager);
 
         /* recyclerView에 아이템 추가 */
-        for(Spec item : TestClass.getTestSpec(mSelectedYear, mSelectedMonth, mSelectedDay)) {
+        for(Spec item : getDaySpec(mSelectedYear, mSelectedMonth, mSelectedDay)) {
             mSpecAdapter.addItem(item);
         }
         mSpecAdapter.notifyDataSetChanged();

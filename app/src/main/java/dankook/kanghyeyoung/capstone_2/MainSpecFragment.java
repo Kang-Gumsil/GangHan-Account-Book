@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static dankook.kanghyeyoung.capstone_2.AccountBookDB.selectAllSpecs;
+import static dankook.kanghyeyoung.capstone_2.AccountBookDB.getDaySpec;
 
 public class MainSpecFragment extends Fragment implements MainFragment {
     private static final String TAG = "MainSpecFragment";
@@ -163,8 +163,10 @@ public class MainSpecFragment extends Fragment implements MainFragment {
         mSummaryView.showSummary(mSelectedYear, mSelectedMonth);
         Log.d(TAG, "The summary view has been updated.");
 
+        mLinearLayout.removeAllViews();
+
         for (int day=1; day<=31; day++) {
-            ArrayList<Spec> items=TestClass.getTestSpec(mSelectedYear, mSelectedMonth, day);
+            ArrayList<Spec> items=getDaySpec(mSelectedYear, mSelectedMonth, day);
             if(items.size()!=0) {
                 addRecyclerView(items, day);
             }
