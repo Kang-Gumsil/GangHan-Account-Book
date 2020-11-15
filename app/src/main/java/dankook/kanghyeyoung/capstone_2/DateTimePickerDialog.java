@@ -13,8 +13,8 @@ import java.util.Calendar;
 import static dankook.kanghyeyoung.capstone_2._FORMAT.DATE_TIME_FORMAT;
 
 public class DateTimePickerDialog {
+    private final static String TAG = "DateTimePickerDialog";
 
-    String TAG = "DateTimePickerDialog";
     private Context mContext;
     private Calendar mCalendar;
     private int mMaxDay;

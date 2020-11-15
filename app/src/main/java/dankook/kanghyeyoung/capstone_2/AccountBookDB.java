@@ -19,12 +19,11 @@ public class AccountBookDB {
     private static AccountBookDB mAccountDB;
     private static DatabaseHelper mDBHelper;
     private static SQLiteDatabase mDB;
-    private AccountBookDB() {}
 
     /* 데이터베이스 열기 */
     public static void databaseOpen(Context context) {
         Log.d("AccountBookDB", "open() 메소드 호출됨");
-        if(mAccountDB == null) {
+        if (mAccountDB == null) {
             mAccountDB = new AccountBookDB();
             mAccountDB.mDBHelper = new DatabaseHelper(context);
             mAccountDB.mDB = mAccountDB.mDBHelper.getWritableDatabase();
@@ -35,14 +34,13 @@ public class AccountBookDB {
     public static int insert(Spec spec) {
         Log.d("AccountBookDB", "insert() 메소드 호출됨");
 
-        if(mAccountDB == null) {
+        if (mAccountDB == null) {
             mAccountDB = new AccountBookDB();
         }
 
         mAccountDB.mDB.execSQL("INSERT INTO Spec (type, cat_main, cat_sub, price, place, date) VALUES "
                 + "(" + spec.getType() + "," + spec.getCatMain() + "," + spec.getCatSub() + ","
                 + spec.getPrice() + ",'" + spec.getPlace() + "','" + DATE_DB_FORMAT.format(spec.getDate()) + "')");
-
 
         // Spec 테이블에 마지막으로 추가한 데이터의 spec_id를 구함
         Cursor c = mAccountDB.mDB.rawQuery("SELECT last_insert_rowid()", null);
@@ -51,7 +49,7 @@ public class AccountBookDB {
 
         // 만약 insert한 내역(spec)의 카테고리가 다중인 경우 세부 내역까지 SpecDetail 테이블에 추가
         if (spec.getCatMain() == Spec.CAT_MAIN_MULTI) {
-            for(int i=0;i<spec.getSpecDetails().size(); i++) {
+            for (int i = 0; i < spec.getSpecDetails().size(); i++) {
                 mAccountDB.mDB.execSQL("INSERT INTO SpecDetail " +
                         "(spec_id, cat_main, cat_sub, spec_name, spec_price, place, date) VALUES ("
                         + specId + "," + spec.getSpecDetails().get(i).getCatMain() + ","
@@ -68,20 +66,20 @@ public class AccountBookDB {
     /* update : 내역 수정 */
     public static void update(int specId, Spec spec) {
 
-        if(mAccountDB == null) {
+        if (mAccountDB == null) {
             mAccountDB = new AccountBookDB();
         }
 
-        mAccountDB.mDB.execSQL("UPDATE Spec SET type="+spec.getType()+", cat_main="+spec.getCatMain()
-                +", cat_sub="+spec.getCatSub()+", price="+spec.getPrice()+", place='"+spec.getPlace()
-                +"', date='"+DATE_DB_FORMAT.format(spec.getDate()) + "' WHERE spec_id="+specId);
+        mAccountDB.mDB.execSQL("UPDATE Spec SET type=" + spec.getType() + ", cat_main=" + spec.getCatMain()
+                + ", cat_sub=" + spec.getCatSub() + ", price=" + spec.getPrice() + ", place='" + spec.getPlace()
+                + "', date='" + DATE_DB_FORMAT.format(spec.getDate()) + "' WHERE spec_id=" + specId);
 
         mAccountDB.mDB.execSQL("DELETE FROM SpecDetail WHERE spec_id=" + specId);
 
-        for(SpecDetail specDetail:spec.getSpecDetails()){
+        for (SpecDetail specDetail : spec.getSpecDetails()) {
             mAccountDB.mDB.execSQL("INSERT INTO SpecDetail (spec_id, cat_main, cat_sub, spec_name, spec_price, place, date) VALUES (" +
-                    specId + ", "+ specDetail.getCatMain() + ", "+ specDetail.getCatSub() + ", '"+
-                    specDetail.getSpecName() + "', "+specDetail.getSpecPrice() + ", '"+spec.getPlace() + "', '"+spec.getDate() +"')");
+                    specId + ", " + specDetail.getCatMain() + ", " + specDetail.getCatSub() + ", '" +
+                    specDetail.getSpecName() + "', " + specDetail.getSpecPrice() + ", '" + spec.getPlace() + "', '" + spec.getDate() + "')");
         }
 
 //        if(spec.getSpecDetails().size()>0) {
@@ -111,23 +109,23 @@ public class AccountBookDB {
         ArrayList<Spec> SpecItems = new ArrayList<>();
         Log.d("AccountBookDB", "selectAllSpecs 호출됨");
 
-        if(mAccountDB == null) {
+        if (mAccountDB == null) {
             mAccountDB = new AccountBookDB();
         }
 
         Calendar cal = Calendar.getInstance();
-        cal.set(year, month-1, 1, 0, 0, 0); // Calendar 클래스에서 month는 0부터 시작함
+        cal.set(year, month - 1, 1, 0, 0, 0); // Calendar 클래스에서 month는 0부터 시작함
 
         // 날짜가 해당 월의 1일부터 마지막 날 23시 59분까지인 Spec 데이터를 조회
         String startDate = DATE_DB_FORMAT.format(cal.getTime());
-        cal.set(year, month-1, cal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
+        cal.set(year, month - 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
         String endDate = DATE_DB_FORMAT.format(cal.getTime());
 
         Cursor SpecCursor = mAccountDB.mDB.rawQuery("SELECT spec_id, type, cat_main, cat_sub, price, place, date" +
                 " FROM Spec WHERE date BETWEEN '" + startDate + "' AND '" + endDate + "' ORDER BY date DESC", null);
 
         int SpecRecordCount = SpecCursor.getCount();
-        for (int i=0; i<SpecRecordCount; i++){
+        for (int i = 0; i < SpecRecordCount; i++) {
             SpecCursor.moveToNext();
             int specId = SpecCursor.getInt(0);
             int type = SpecCursor.getInt(1);
@@ -146,13 +144,13 @@ public class AccountBookDB {
 
             // 조회한 Spec 테이블 데이터의 메인 카테고리가 다중인 경우,
             // SpecDetail 테이블에서 같은 spec_id를 foreign key로 갖는 데이터를 함께 반환함
-            if(catMain == Spec.CAT_MAIN_MULTI) {
+            if (catMain == Spec.CAT_MAIN_MULTI) {
                 Log.d("AccountBookDB", "catMain == CAT_MAIN_MULTI");
                 Log.d("AccountBookDB", "specId = " + specId);
 
                 Cursor SpecDetailCursor = mAccountDB.mDB.rawQuery("SELECT * FROM SpecDetail " +
-                                                                    "WHERE spec_id='" + specId + "'", null);
-                int DetailRecordCount=SpecDetailCursor.getCount();
+                        "WHERE spec_id='" + specId + "'", null);
+                int DetailRecordCount = SpecDetailCursor.getCount();
                 Log.d("AccountBookDB", "SpecDetailCursor.getCount() : " + DetailRecordCount);
 
                 for (int j = 0; j < DetailRecordCount; j++) {
@@ -171,7 +169,7 @@ public class AccountBookDB {
             }
 
             Log.d("AccountBookDB", "selectAllSpecs:" + i + " : " + specId + ", " + catMain + ", " +
-                    catSub + ", " + type + ", " + price + ", " + place + ", " + date + ", " + spec.getSpecDetails().size() );
+                    catSub + ", " + type + ", " + price + ", " + place + ", " + date + ", " + spec.getSpecDetails().size());
             SpecItems.add(spec);
         }
         SpecCursor.close();
@@ -181,14 +179,14 @@ public class AccountBookDB {
     /* getSumOfDay : 지정한 날짜에 대한 소비/지출 합산 금액 포함한 DayInfo 클래스 반환 */
     public static DayInfo getSumOfDay(int year, int month, int day) {
 
-        if(mAccountDB == null) {
+        if (mAccountDB == null) {
             mAccountDB = new AccountBookDB();
         }
 
         Calendar cal = Calendar.getInstance();
-        cal.set(year, month-1, day, 0, 0);
+        cal.set(year, month - 1, day, 0, 0);
         String startTime = DATE_DB_FORMAT.format(cal.getTime());
-        cal.set(year, month-1, day, 23, 59);
+        cal.set(year, month - 1, day, 23, 59);
         String endTime = DATE_DB_FORMAT.format(cal.getTime());
 
         int incomeSum = 0;
@@ -198,7 +196,7 @@ public class AccountBookDB {
 
         int SpecRecordCount = SpecCursor.getCount();
         // 수입합과 지출합을 구함
-        for (int i=0; i<SpecRecordCount; i++) {
+        for (int i = 0; i < SpecRecordCount; i++) {
             SpecCursor.moveToNext();
             if (SpecCursor.getInt(0) == Spec.TYPE_INCOME) {
                 incomeSum += SpecCursor.getInt(1);
@@ -218,7 +216,7 @@ public class AccountBookDB {
 
     /* deleteSpecDetail : spedDetailId를 갖는 하나의 세부 내역 삭제 */
     public static void deleteSpecDetail(int specDetailId) {
-        mAccountDB.mDB.execSQL("DELETE FROM SpecDetail WHERE spec_detail_id="+specDetailId);
+        mAccountDB.mDB.execSQL("DELETE FROM SpecDetail WHERE spec_detail_id=" + specDetailId);
         Log.d("AccountBookDB", "deleteSpecDetail 호출 : " + specDetailId);
     }
 
@@ -227,11 +225,11 @@ public class AccountBookDB {
         int sum = 0;
         Calendar cal = Calendar.getInstance();
         // Calendar 클래스에서 month는 0부터 시작함
-        cal.set(year, month-1, 1, 0, 0, 0);
+        cal.set(year, month - 1, 1, 0, 0, 0);
 
         // 날짜가 해당 월의 1일부터 마지막 날 23시 59분까지인 Spec, SpecDetail 데이터를 조회
         String startDate = DATE_DB_FORMAT.format(cal.getTime());
-        cal.set(year, month-1, cal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
+        cal.set(year, month - 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
         String endDate = DATE_DB_FORMAT.format(cal.getTime());
 
         Cursor SpecCursor = mAccountDB.mDB.rawQuery("SELECT sum(price)" +
@@ -255,21 +253,55 @@ public class AccountBookDB {
         return sum;
     }
 
+    /* SumForCat : 인자로 연, 월, 카테고리를 받고, 해당 기간에 그 세부 카테고리에 대해 지출한 금액을 합산하여 반환 */
+    public static int SumForSubCat(int year, int month, int catMain, int catSub) {
+        int sum = 0;
+        Calendar cal = Calendar.getInstance();
+        // Calendar 클래스에서 month는 0부터 시작함
+        cal.set(year, month - 1, 1, 0, 0, 0);
+
+        // 날짜가 해당 월의 1일부터 마지막 날 23시 59분까지인 Spec, SpecDetail 데이터를 조회
+        String startDate = DATE_DB_FORMAT.format(cal.getTime());
+        cal.set(year, month - 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
+        String endDate = DATE_DB_FORMAT.format(cal.getTime());
+
+        Cursor SpecCursor = mAccountDB.mDB.rawQuery("SELECT sum(price)" +
+                " FROM Spec WHERE (date BETWEEN '" + startDate + "' AND '" + endDate + "') AND (type=" + 1 +
+                ") AND (cat_main='" + catMain + "') AND (cat_sub= '" + catSub + "')", null);
+
+        if (SpecCursor != null) {
+            SpecCursor.moveToFirst();
+            sum += SpecCursor.getInt(0);
+            SpecCursor.close();
+        }
+
+        Cursor SpecDetailCursor = mAccountDB.mDB.rawQuery("SELECT sum(spec_price)" +
+                " FROM SpecDetail WHERE (date BETWEEN '" + startDate + "' AND '" + endDate + "') " +
+                " AND (cat_main='" + catMain + "') AND (cat_sub= '" + catSub + "')", null);
+
+        if (SpecDetailCursor != null) {
+            SpecDetailCursor.moveToFirst();
+            sum += SpecDetailCursor.getInt(0);
+            SpecDetailCursor.close();
+        }
+        return sum;
+    }
+
     /* sumAll : 지정한 달의 누적 수입 or 지출 반환 */
     public static int sumAll(int year, int month, int type) {
 
         Calendar cal = Calendar.getInstance();
-        cal.set(year, month-1, 1, 0, 0, 0); // Calendar 클래스에서 month는 0부터 시작함
+        cal.set(year, month - 1, 1, 0, 0, 0); // Calendar 클래스에서 month는 0부터 시작함
 
         // 날짜가 해당 월의 1일부터 마지막 날 23시 59분까지인 Spec 데이터를 조회
         String startDate = DATE_DB_FORMAT.format(cal.getTime());
-        cal.set(year, month-1, cal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
+        cal.set(year, month - 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59);
         String endDate = DATE_DB_FORMAT.format(cal.getTime());
 
         Cursor c = mAccountDB.mDB.rawQuery("SELECT sum(price)" +
-                " FROM Spec WHERE (date BETWEEN '" + startDate + "' AND '" + endDate + "') AND (type =="+type+")" , null);
+                " FROM Spec WHERE (date BETWEEN '" + startDate + "' AND '" + endDate + "') AND (type ==" + type + ")", null);
 
-        int sum=0;
+        int sum = 0;
 
         if (c != null) {
             c.moveToFirst();
@@ -288,13 +320,12 @@ public class AccountBookDB {
 //            }
 //        }
 
-        Log.d("테스트", "연"+year+"월"+month+"합계"+sum);
+        Log.d("테스트", "연" + year + "월" + month + "합계" + sum);
         return sum;
     }
 
     /* 데이터베이스 헬퍼 클래스 정의 */
     public static class DatabaseHelper extends SQLiteOpenHelper {
-
 
         public DatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
             super(context, name, factory, version);
@@ -351,15 +382,4 @@ public class AccountBookDB {
             super.onOpen(db);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 }

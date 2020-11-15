@@ -24,7 +24,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="11dp"
+                android:layout_marginHorizontal="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -95,8 +95,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout1"
-                android:background="@drawable/view_stat_list">
-            </androidx.recyclerview.widget.RecyclerView>
+                android:background="@drawable/view_stat_list"/>
             <!-- end of 리스트 내용 -->
             <!-- end of 리스트 -->
 

@@ -25,11 +25,6 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
     /* 리스너 객체 참조를 저장하는 변수 */
     private OnItemClickListener mItemClickListener=null;
 
-    /* item click listener interface 정의 */
-    public interface OnItemClickListener {
-        void onItemClick(View v, int position);
-    }
-
     /* onItemClickListener 객체 참조를 어댑터에 전달하는 메서드 */
     public void setOnItemClickListener(OnItemClickListener listener) {
         mItemClickListener=listener;
@@ -104,7 +99,6 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
                     int position=getAdapterPosition();
                     if(position!= RecyclerView.NO_POSITION) {
                         if(mItemClickListener!=null) {
-                            Spec item=mItems.get(position);
                             mItemClickListener.onItemClick(v, position);
                         }
                     }

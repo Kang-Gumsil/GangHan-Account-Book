@@ -3,10 +3,12 @@ package dankook.kanghyeyoung.capstone_2;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +39,7 @@ public class MainStatFragment extends Fragment implements MainFragment {
     MainActivity activity;
     SummaryView mSummaryView;
     RecyclerView mRecyclerView;
-    StatListAdapter mStatListAdapter;
+    StatMainCatListAdapter mStatMainCatListAdapter;
 
     int mCurYear;
     int mCurMonth;
@@ -107,11 +109,31 @@ public class MainStatFragment extends Fragment implements MainFragment {
         mChart.setEntryLabelColor(COLOR_TEXT_INT);
         mChart.setEntryLabelTextSize(18f);
 
-        /* gridView에 레이아웃 추가 */
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        /* StatListAdapter, onItemClickListener 설정 */
+        mStatMainCatListAdapter = new StatMainCatListAdapter(mSelectedYear, mSelectedMonth);
+        mStatMainCatListAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                int catMain = mStatMainCatListAdapter.getItem(position).getCat();
+                Log.d(TAG, catMain + "(" + Spec.getCatMainName(catMain) + ")" + " 카테고리 선택, 총 금액 : "
+                        + AccountBookDB.SumForCat(mSelectedYear, mSelectedMonth, catMain));
+
+                if (Spec.getCatSubCount(catMain) != 0) {
+                    ShowStatSubCatDialog dialog =
+                            new ShowStatSubCatDialog(getContext(), catMain, mSelectedYear, mSelectedMonth);
+                    dialog.show();
+
+                } else {
+                    showToast(Spec.getCatMainName(catMain) + " 카테고리는 세부 카테고리가 없습니다.");
+                }
+            }
+        });
+        mRecyclerView.setAdapter(mStatMainCatListAdapter);
+
+        /* recyclerView에 레이아웃 설정 */
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mStatListAdapter = new StatListAdapter(mSelectedYear, mSelectedMonth);
-        mRecyclerView.setAdapter(mStatListAdapter);
 
         /* recyclerView 아이템간 구분선 추가 */
         DividerItemDecoration dividerItemDecoration =
@@ -132,18 +154,21 @@ public class MainStatFragment extends Fragment implements MainFragment {
 
     /* 설정된 년/월 변경 및 pieChart, adapter 갱신 */
     public void updateSelectedDate(int year, int month) {
+        Log.d(TAG, "The date has been selected, or data has been changed.");
 
         mSelectedYear = year;
         mSelectedMonth = month;
         mSummaryView.mTextViewYear.setText(mSelectedYear + "년");
         mSummaryView.mTextViewMonth.setText(mSelectedMonth + "월");
         mSummaryView.showSummary(mSelectedYear, mSelectedMonth);
+        Log.d(TAG, "The summary view has been updated.");
 
         /* 변동사항 업데이트 */
         ArrayList<Integer> sumOfCats = new ArrayList();
+
         // 다중 카테고리, 수입 카테고리 제외
-        for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN-1; i++) {
-            sumOfCats.add(AccountBookDB.SumForCat(mSelectedYear, mSelectedMonth, i+1));
+        for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN - 1; i++) {
+            sumOfCats.add(AccountBookDB.SumForCat(mSelectedYear, mSelectedMonth, i + 1));
         }
 
         /* pieChart 데이터 업데이트 */
@@ -151,12 +176,12 @@ public class MainStatFragment extends Fragment implements MainFragment {
 
             // pieEntry 추가
             ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-            for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN-1; i++) {
+            for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN - 1; i++) {
                 int tempTotal = sumOfCats.get(i);
 
                 // 합계금액이 0이 아닐때만 넣기
                 if (tempTotal != 0) {
-                    entries.add(new PieEntry(tempTotal, Spec.CAT_MAIN_CLASS[i+1]));
+                    entries.add(new PieEntry(tempTotal, Spec.CAT_MAIN_CLASS[i + 1]));
                 }
             }
 
@@ -177,16 +202,22 @@ public class MainStatFragment extends Fragment implements MainFragment {
             mChart.setData(data);
             mChart.invalidate();
         }
+        Log.d(TAG, "The data in the pie chart has been updated.");
 
         /* gridView 데이터 업데이트 */
-        if (mStatListAdapter != null) {
+        if (mStatMainCatListAdapter != null) {
 
             // 카테고리별 합계금액 갖는 hashMap 만들고 업데이트
-            mStatListAdapter.updateDate(mSelectedYear, mSelectedMonth);
-            for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN-1; i++) {
-                mStatListAdapter.addItem(new SumOfCat(i+1, sumOfCats.get(i)));
+            mStatMainCatListAdapter.updateDate(mSelectedYear, mSelectedMonth);
+            for (int i = 0; i < COUNT_EXPENSE_CAT_MAIN - 1; i++) {
+                mStatMainCatListAdapter.addItem(new SumOfCat(i + 1, sumOfCats.get(i)));
             }
-            mStatListAdapter.notifyDataSetChanged();
+            mStatMainCatListAdapter.notifyDataSetChanged();
         }
+        Log.d(TAG, "The data in the grid view has been updated.");
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
     }
 }

@@ -31,7 +31,7 @@ import static dankook.kanghyeyoung.capstone_2.AccountBookDB.delete;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private static final int REQUEST_CODE_FOR_INPUT = 100;
+    private static final int REQUEST_CODE_FOR_UPDATE = 100;
     private static final int REQUEST_CODE_FOR_PERMISSION = 101;
 
     FragmentManager mFragmentManager;
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         /* 내부DB 생성 */
         databaseOpen(this);
-
         delete(10);
+
         /* FragmentManger 얻기 */
         mFragmentManager = getSupportFragmentManager();
         Log.d(TAG, "getFragmentManager");
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_FOR_INPUT && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_FOR_UPDATE && resultCode == RESULT_OK) {
             for (Fragment fragment : mFragmentManager.getFragments()) {
                 ((MainFragment) fragment).updateSelectedDate();
             }

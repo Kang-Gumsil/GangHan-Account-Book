@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:background="@null">
+
+    <!-- 리스트 바 -->
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:paddingHorizontal="15dp"
+        android:background="@drawable/view_stat_list_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_cat_main" >
+
+        <TextView
+            android:id="@+id/textView_day"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|left"
+            android:textSize="18dp"
+            android:textColor="#FFFFFF"
+            android:text="dd일 내역" />
+    </LinearLayout>
+    <!-- end of 리스트 바 -->
+
+    <!-- 리스트 내용 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout1"
+        android:background="@null" />
+    <!-- end of 리스트 내용 -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

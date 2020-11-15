@@ -115,6 +115,7 @@ public class MainCalFragment extends Fragment implements MainFragment {
 
     /* 설정된 년/월 변경 및 calendar 갱신 */
     public void updateSelectedDate(int year, int month) {
+        Log.d(TAG, "The date has been selected, or data has been changed.");
 
         mSelectedYear = year;
         mSelectedMonth = month;
@@ -122,6 +123,7 @@ public class MainCalFragment extends Fragment implements MainFragment {
         mSummaryView.mTextViewYear.setText(mSelectedYear + "년");
         mSummaryView.mTextViewMonth.setText(mSelectedMonth + "월");
         mSummaryView.showSummary(mSelectedYear, mSelectedMonth);
+        Log.d(TAG, "The summary view has been updated.");
 
         if (mGridView!=null) {
 
@@ -131,10 +133,6 @@ public class MainCalFragment extends Fragment implements MainFragment {
             int lastDayOfMonth = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 달의 일 수
             int lastWeekOfMonth = mCalendar.getActualMaximum(Calendar.WEEK_OF_MONTH); // 해당 달의 주 수
             int lastDayOfWeek=-1; // 해당 달 마지막 일의 요일
-            Log.d(TAG, mSelectedYear+"년 "+mSelectedMonth+"월");
-            Log.d(TAG, "1일 : "+firstDayOfWeek+"요일");
-            Log.d(TAG, "마지막 일 : "+lastDayOfMonth+"일");
-            Log.d(TAG, "총 "+lastWeekOfMonth+"주");
 
             /* 해당 달의 날짜 리스트 만들기 -> Day(날짜, 요일, 수입, 지출) */
             ArrayList<DayInfo> dayInfos = new ArrayList<DayInfo>();
@@ -173,9 +171,19 @@ public class MainCalFragment extends Fragment implements MainFragment {
             // gridView의 행 개수를 7로 설정
             mGridView.setNumColumns(7);
 
-            /* 캘린더 어댑터에 해당 달의 날짜 리스트 삽입하고 그리드뷰에 설정 */
+            /* 캘린더 어댑터에 해당 달의 날짜 리스트, 클릭 리스너 설정 */
             mCalendarAdapter = new CalendarAdapter(dayInfos, itemHeight);
+            mCalendarAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    int day=((DayInfo)mCalendarAdapter.getItem(position)).getDay();
+                    ShowCalDayDialog dialog =
+                            new ShowCalDayDialog(getContext(), mSelectedYear, mSelectedMonth, day);
+                    dialog.show();
+                }
+            });
             mGridView.setAdapter(mCalendarAdapter);
         }
+        Log.d(TAG, "The data in the grid view has been updated.");
     }
 }
