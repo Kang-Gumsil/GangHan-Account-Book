@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="120dp"
     android:orientation="horizontal"
     android:padding="15dp"
-    android:background="@drawable/view_summery_background">
+    android:background="@drawable/fixedsqr">
 
     <!-- 년/월 선택 -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,10 @@
             android:gravity="center"
             android:text="0000 년"
             android:textColor="@color/textColor"
-            android:textSize="18sp"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="17dp"
+            android:letterSpacing="0.02"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,13 +43,13 @@
             android:id="@+id/textView_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/nanum_square_ac_b"
             android:gravity="center"
+            android:letterSpacing="0.02"
             android:text="0 월"
             android:textColor="@color/textColor"
-            android:textSize="38sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
+            android:textSize="35dp"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="@+id/button"
             app:layout_constraintStart_toStartOf="@+id/button"
             app:layout_constraintTop_toBottomOf="@+id/textView_year" />
@@ -82,8 +85,11 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="수입"
+                android:fontFamily="@font/nanum_square_ac_r"
+                android:textStyle="normal"
+                android:letterSpacing="0.02"
                 android:textColor="@color/textColor"
-                android:textSize="18sp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/textView_income2"
@@ -91,8 +97,11 @@
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:text="0원"
-                android:textColor="#FA5454"
-                android:textSize="18sp" />
+                android:fontFamily="@font/nanum_square_ac_r"
+                android:textStyle="normal"
+                android:letterSpacing="0.02"
+                android:textColor="@color/income"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <!-- 지출 -->
@@ -108,8 +117,11 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="지출"
+                android:fontFamily="@font/nanum_square_ac_r"
+                android:textStyle="normal"
+                android:letterSpacing="0.02"
                 android:textColor="@color/textColor"
-                android:textSize="18sp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/textView_expense2"
@@ -117,8 +129,11 @@
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:text="0원"
-                android:textColor="#246DFF"
-                android:textSize="18sp" />
+                android:fontFamily="@font/nanum_square_ac_r"
+                android:textStyle="normal"
+                android:letterSpacing="0.02"
+                android:textColor="@color/expense"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <!-- 잔액 -->
@@ -134,8 +149,11 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="잔액"
+                android:fontFamily="@font/nanum_square_ac_r"
+                android:textStyle="normal"
+                android:letterSpacing="0.02"
                 android:textColor="@color/textColor"
-                android:textSize="18sp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/textView_balance2"
@@ -143,8 +161,11 @@
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:text="0원"
+                android:fontFamily="@font/nanum_square_ac_r"
+                android:textStyle="normal"
+                android:letterSpacing="0.02"
                 android:textColor="@color/textColor"
-                android:textSize="18sp" />
+                android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

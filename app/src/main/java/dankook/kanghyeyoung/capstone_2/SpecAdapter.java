@@ -75,9 +75,7 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextViewType;
         TextView mTextViewPlace;
-        TextView mTextViewDate;
         TextView mTextViewCat;
         TextView mTextViewPrice;
         ImageView mImageViewCat;
@@ -85,9 +83,7 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mTextViewType=itemView.findViewById(R.id.textView_type);
             mTextViewPlace=itemView.findViewById(R.id.textView_place);
-            mTextViewDate=itemView.findViewById(R.id.textView_date);
             mTextViewCat=itemView.findViewById(R.id.textView_cat);
             mTextViewPrice=itemView.findViewById(R.id.textView_price);
             mImageViewCat=itemView.findViewById(R.id.imageView_cat);
@@ -107,9 +103,7 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
         }
 
         public void setItem(Spec item) {
-            mTextViewType.setText(Spec.TYPE_CLASS[item.getType()]); // 분류
             mTextViewPlace.setText(item.getPlace()); // 거래처
-            mTextViewDate.setText(YEAR_MONTH_FORMAT.format(item.getDate())); // 날짜
 
             // 가격 -> 지출이면 가격 앞에 '-' 붙이기
             if (item.getType()==Spec.TYPE_EXPENSE) {

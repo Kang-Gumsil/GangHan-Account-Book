@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -67,6 +68,7 @@ public class DateTimePickerDialog {
         this.mCalendar = cal;
         // 커스텀 다이얼로그 정의하기 위해 Dialog 클래스 생성
         final Dialog dialog = new Dialog(mContext);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         // 커스텀 다이얼로그의 레이아웃을 설정
         dialog.setContentView(R.layout.dialog_date_time_picker);

@@ -4,30 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
+    android:paddingBottom="20dp"
     android:background="@null">
 
     <!-- 리스트 바 -->
-    <LinearLayout
-        android:id="@+id/layout1"
+    <TextView
+        android:id="@+id/textView_day"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:paddingHorizontal="15dp"
-        android:background="@drawable/view_stat_list_bar"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:fontFamily="@font/nanum_square_ac_b"
+        android:gravity="center_vertical|left"
+        android:letterSpacing="0.02"
+        android:text="dd일 내역"
+        android:textColor="#564e50"
+        android:textSize="15dp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_cat_main" >
-
-        <TextView
-            android:id="@+id/textView_day"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|left"
-            android:textSize="18dp"
-            android:textColor="#FFFFFF"
-            android:text="dd일 내역" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
     <!-- end of 리스트 바 -->
 
     <!-- 리스트 내용 -->
@@ -35,9 +30,10 @@
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout1"
+        app:layout_constraintTop_toBottomOf="@+id/textView_day"
         android:background="@null" />
     <!-- end of 리스트 내용 -->
 

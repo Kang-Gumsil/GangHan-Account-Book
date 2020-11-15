@@ -7,35 +7,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@null">
+    android:background="@color/background" >
 
-
-
-
-
-
-
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_marginHorizontal="15dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />-->
-    <!-- end of 내역 리스트 -->
-
-
-    <ScrollView
+    <!-- 배경 -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="200dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="1000dp"
+        android:layout_height="500dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout">
+        app:srcCompat="@drawable/_1" />
+    <!-- end of 배경 -->
 
+    <!-- 내역 입력 버튼 -->
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,8 +50,8 @@
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -58,37 +62,37 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="19dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="11dp"
                 android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
             <!-- end of 내역 리스트 -->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <!-- 내역 입력 버튼 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/imageView_spec_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="376dp"
+            android:layout_height="100dp"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="10dp"
-            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/view_receipt_input" />
+            app:srcCompat="@drawable/add_breakdown" />
 
         <ImageView
             android:id="@+id/imageView1"
@@ -108,8 +112,11 @@
             android:layout_height="0dp"
             android:background="@null"
             android:text="직접 입력"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="24dp"
+            android:textColor="#ffffff"
+            android:letterSpacing="0.02"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageView1"
             app:layout_constraintStart_toStartOf="@+id/imageView_spec_input"
@@ -121,8 +128,11 @@
             android:layout_height="0dp"
             android:background="@null"
             android:text="영수증 촬영"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="24dp"
+            android:textColor="#ffffff"
+            android:letterSpacing="0.02"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView_spec_input"
             app:layout_constraintStart_toEndOf="@+id/imageView1"

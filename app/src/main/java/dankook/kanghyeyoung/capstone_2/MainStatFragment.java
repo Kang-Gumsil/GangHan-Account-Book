@@ -2,6 +2,9 @@ package dankook.kanghyeyoung.capstone_2;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -79,17 +83,12 @@ public class MainStatFragment extends Fragment implements MainFragment {
             @Override
             public void onClick(View v) {
 
-                // 현재 선택된 년/월을 DatePicker 프래그먼트로 보내기 위한 번들 생성
-                Bundle bundle = new Bundle();
-                bundle.putInt("curYear", mCurYear);
-                bundle.putInt("selectedYear", mSelectedYear);
-                bundle.putInt("selectedMonth", mSelectedMonth);
-
                 // datePickerDialog 생성 및 show
-                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog();
-                yearMonthPickerDialog.setArguments(bundle);
-                yearMonthPickerDialog.setDateSetListener(mDialogListener);
-                yearMonthPickerDialog.show(getChildFragmentManager(), "datePicker");
+                YearMonthPickerDialog dialog =
+                        new YearMonthPickerDialog(getContext(), mCurYear, mSelectedYear, mSelectedMonth);
+                dialog.setDateSetListener(mDialogListener);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
             }
         });
 
@@ -121,6 +120,7 @@ public class MainStatFragment extends Fragment implements MainFragment {
                 if (Spec.getCatSubCount(catMain) != 0) {
                     ShowStatSubCatDialog dialog =
                             new ShowStatSubCatDialog(getContext(), catMain, mSelectedYear, mSelectedMonth);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
                 } else {
@@ -189,7 +189,23 @@ public class MainStatFragment extends Fragment implements MainFragment {
             PieDataSet dataSet = new PieDataSet(entries, "카테고리별 소비 통계");
             dataSet.setSliceSpace(3f);
             dataSet.setSelectionShift(30f);
-            dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+            int chartColors[]={
+                    Color.rgb(239, 136, 118),
+                    Color.rgb(204, 86, 86),
+                    Color.rgb(140, 65, 96),
+                    Color.rgb(237, 123, 140),
+                    Color.rgb(255,169,164),
+                    Color.rgb(235,108,110),
+                    Color.rgb(139,119,238),
+                    Color.rgb(93,87,203),
+                    Color.rgb(76,93,128),
+                    Color.rgb(111,131,175),
+                    Color.rgb(124,135,236),
+                    Color.rgb(174,165,254),
+                    Color.rgb(113,109,234),
+                    Color.rgb(178,176,244),
+            };
+            dataSet.setColors(chartColors);
 
             dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
             dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
