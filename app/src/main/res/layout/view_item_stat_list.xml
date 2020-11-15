@@ -9,17 +9,25 @@
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/textColor"
+        android:gravity="left"
+        android:fontFamily="@font/nanum_square_ac_r"
+        android:textStyle="normal"
+        android:textSize="15dp"
+        android:textColor="#665f62"
+        android:letterSpacing="0.02"
         android:text="TextView" />
+
     <TextView
         android:id="@+id/textView_percent"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:textColor="@color/textColor"
-        android:textSize="16sp"
+        android:fontFamily="@font/nanum_square_ac_r"
+        android:textStyle="normal"
+        android:textSize="15dp"
+        android:textColor="#665f62"
+        android:letterSpacing="0.02"
         android:text="TextView" />
     <TextView
         android:id="@+id/textView_total"
@@ -27,7 +35,10 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:textColor="@color/textColor"
-        android:textSize="16sp"
+        android:fontFamily="@font/nanum_square_ac_r"
+        android:textStyle="normal"
+        android:textSize="15dp"
+        android:textColor="#665f62"
+        android:letterSpacing="0.02"
         android:text="TextView" />
 </LinearLayout>

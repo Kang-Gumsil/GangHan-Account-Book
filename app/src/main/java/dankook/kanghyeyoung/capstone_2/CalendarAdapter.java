@@ -14,7 +14,6 @@ import static dankook.kanghyeyoung.capstone_2._FORMAT.DECIMAL_FORMAT;
 
 public class CalendarAdapter extends BaseAdapter {
     ArrayList<DayInfo> mDayInfos;
-    float mItemHeight;
 
     /* 리스너 객체 참조를 저장하는 변수 */
     private OnItemClickListener mItemClickListener=null;
@@ -24,9 +23,8 @@ public class CalendarAdapter extends BaseAdapter {
         mItemClickListener=listener;
     }
 
-    public CalendarAdapter(ArrayList<DayInfo> dayInfos, float itemHeight) {
+    public CalendarAdapter(ArrayList<DayInfo> dayInfos) {
         mDayInfos = dayInfos;
-        mItemHeight = itemHeight;
     }
 
     @Override
@@ -53,9 +51,6 @@ public class CalendarAdapter extends BaseAdapter {
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
             view = inflater.inflate(R.layout.view_item_cal, viewGroup, false);
-            ViewGroup.LayoutParams params = view.getLayoutParams();
-            params.height = (int) mItemHeight;
-            view.setLayoutParams(params);
         }
 
         /* textView에 날짜와 수입/지출 설정 */

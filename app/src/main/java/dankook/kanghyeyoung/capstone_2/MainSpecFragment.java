@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.text.PrecomputedText;
@@ -36,10 +37,8 @@ public class MainSpecFragment extends Fragment implements MainFragment {
     private static final int REQUEST_CODE_FOR_UPDATE = 100;
 
     SummaryView mSummaryView;
-//    SpecAdapter mSpecAdapter;
     Context mContext;
     MainActivity activity;
-//    RecyclerView mRecyclerView;
     LinearLayout mLinearLayout;
 
     int mCurYear;
@@ -80,49 +79,20 @@ public class MainSpecFragment extends Fragment implements MainFragment {
             @Override
             public void onClick(View v) {
 
-                // 현재 선택된 년/월을 DatePicker 프래그먼트로 보내기 위한 번들 생성
-                Bundle bundle = new Bundle();
-                bundle.putInt("curYear", mCurYear);
-                bundle.putInt("selectedYear", mSelectedYear);
-                bundle.putInt("selectedMonth", mSelectedMonth);
-
                 // datePickerDialog 생성 및 show
-                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog();
-                yearMonthPickerDialog.setArguments(bundle);
-                yearMonthPickerDialog.setDateSetListener(mDialogListener);
-                yearMonthPickerDialog.show(getChildFragmentManager(), "datePicker");
+                YearMonthPickerDialog dialog =
+                        new YearMonthPickerDialog(getContext(), mCurYear, mSelectedYear, mSelectedMonth);
+                dialog.setDateSetListener(mDialogListener);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
             }
         });
 
         /* view 참조 */
-//        mRecyclerView = rootView.findViewById(R.id.recyclerView);
         mLinearLayout=rootView.findViewById(R.id.linearLayout);
         Button buttonManualInput = rootView.findViewById(R.id.button_manual_input);
         Button buttonAutoInput = rootView.findViewById(R.id.button_auto_input);
 
-        /* specAdapter, onItemClickListener 설정 */
-//        mSpecAdapter = new SpecAdapter();
-//        mSpecAdapter.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View v, int position) {
-//                Spec item = mSpecAdapter.getItem(position);
-//                Intent intent = new Intent(mContext, ShowSpecActivity.class);
-//                intent.putExtra("spec_item", item);
-//                activity.startActivity(intent);
-//            }
-//        });
-//        mRecyclerView.setAdapter(mSpecAdapter);
-//
-//        /* recyclerView에 레이아웃 추가 */
-//        LinearLayoutManager layoutManager =
-//                new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-//        mRecyclerView.setLayoutManager(layoutManager);
-//
-//        /* recyclerView 아이템간 구분선 추가 */
-//        DividerItemDecoration dividerItemDecoration =
-//                new DividerItemDecoration(
-//                        mRecyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-//        mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         /* 내역추가 버튼 설정 */
         buttonManualInput.setOnClickListener(new View.OnClickListener() {
@@ -171,12 +141,6 @@ public class MainSpecFragment extends Fragment implements MainFragment {
                 addRecyclerView(items, day);
             }
         }
-//        if (mSpecAdapter != null) {
-//            ArrayList<Spec> items = selectAllSpecs(mSelectedYear, mSelectedMonth);
-//            mSpecAdapter.clear();
-//            mSpecAdapter.addItems(items);
-//            mSpecAdapter.notifyDataSetChanged();
-//        }
         Log.d(TAG, "The data in the recycler view has been updated.");
     }
 
@@ -208,12 +172,6 @@ public class MainSpecFragment extends Fragment implements MainFragment {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-
-        /* recyclerView 아이템간 구분선 추가 */
-//        DividerItemDecoration dividerItemDecoration =
-//                new DividerItemDecoration(
-//                        recyclerView.getContext(), new LinearLayoutManager(getContext()).getOrientation());
-//        recyclerView.addItemDecoration(dividerItemDecoration);
 
         /* 화면에 추가 */
         mLinearLayout.addView(rootView);

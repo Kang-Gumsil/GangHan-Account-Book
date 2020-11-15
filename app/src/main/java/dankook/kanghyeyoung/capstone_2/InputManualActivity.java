@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -46,7 +47,6 @@ import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_MULTI;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_OTHER;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_RELATIONSHIP;
 import static dankook.kanghyeyoung.capstone_2.Spec.CAT_MAIN_TRANSPORT;
-import static dankook.kanghyeyoung.capstone_2._COLOR.COLOR_PINK_GRAY;
 import static dankook.kanghyeyoung.capstone_2._FORMAT.DATE_TIME_FORMAT;
 import static dankook.kanghyeyoung.capstone_2._FORMAT.DECIMAL_FORMAT;
 
@@ -109,8 +109,8 @@ public class InputManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mTypeFlag==-1||mTypeFlag==Spec.TYPE_EXPENSE) {
                     mTypeFlag=0;
-                    mButtonIncome.setBackgroundColor(Color.parseColor(COLOR_PINK_GRAY));
-                    mButtonSpend.setBackgroundColor(Color.parseColor("#02FFFFFF"));
+                    mButtonIncome.setTextColor(Color.parseColor("#ED7C7A"));
+                    mButtonSpend.setTextColor(Color.parseColor("#564E50"));
                     mLayoutCat.setVisibility(View.GONE);
                     Log.d(TAG, "수입 버튼 선택됨");
                 }
@@ -123,8 +123,8 @@ public class InputManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mTypeFlag==-1||mTypeFlag==Spec.TYPE_INCOME) {
                     mTypeFlag=1;
-                    mButtonSpend.setBackgroundColor(Color.parseColor(COLOR_PINK_GRAY));
-                    mButtonIncome.setBackgroundColor(Color.parseColor("#02FFFFFF"));
+                    mButtonSpend.setTextColor(Color.parseColor("#ED7C7A"));
+                    mButtonIncome.setTextColor(Color.parseColor("#564E50"));
                     mLayoutCat.setVisibility(View.VISIBLE);
                     Log.d(TAG, "지출 버튼 선택됨");
                 }
@@ -211,7 +211,7 @@ public class InputManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(InputManualActivity.this);
                 View view = LayoutInflater.from(InputManualActivity.this)
-                        .inflate(R.layout.view_dialog_input_manual, null, false);
+                        .inflate(R.layout.dialog_input_manual, null, false);
                 builder.setView(view);
 
                 Button buttonDetailRegister = view.findViewById(R.id.button_detail_register);
@@ -221,9 +221,10 @@ public class InputManualActivity extends AppCompatActivity {
                 final EditText inputSpecName = view.findViewById(R.id.editText_specName);
                 final EditText inputSpecPrice=view.findViewById(R.id.editText_specPrice);
 
-                final LinearLayout layoutDetailSubcat = view.findViewById(R.id.layout_detail_subcat);
+                final LinearLayout layoutDetailSubcat = view.findViewById(R.id.layout_specDetail);
 
                 final AlertDialog dialog = builder.create();
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 /* inputSpecPrice 1000단위 컴마 찍기 */
                 TextWatcher textWatcher2=new TextWatcher() {

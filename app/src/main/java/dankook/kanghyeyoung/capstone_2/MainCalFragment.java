@@ -2,11 +2,15 @@ package dankook.kanghyeyoung.capstone_2;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 
@@ -85,17 +89,12 @@ public class MainCalFragment extends Fragment implements MainFragment {
             @Override
             public void onClick(View v) {
 
-                // 현재 선택된 년/월을 DatePicker 프래그먼트로 보내기 위한 번들 생성
-                Bundle bundle = new Bundle();
-                bundle.putInt("curYear", mCurYear);
-                bundle.putInt("selectedYear", mSelectedYear);
-                bundle.putInt("selectedMonth", mSelectedMonth);
-
                 // datePickerDialog 생성 및 show
-                YearMonthPickerDialog yearMonthPickerDialog = new YearMonthPickerDialog();
-                yearMonthPickerDialog.setArguments(bundle);
-                yearMonthPickerDialog.setDateSetListener(mDialogListener);
-                yearMonthPickerDialog.show(getChildFragmentManager(), "datePicker");
+                YearMonthPickerDialog dialog =
+                        new YearMonthPickerDialog(getContext(), mCurYear, mSelectedYear, mSelectedMonth);
+                dialog.setDateSetListener(mDialogListener);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
             }
         });
 
@@ -157,28 +156,25 @@ public class MainCalFragment extends Fragment implements MainFragment {
 
             // gridView의 열 개수를 해당 달의 주 수만큼으로 수정하기
             // 5주면 셀의 개수를 35개로, 6주면 42개로 설정하기
-            float itemHeight=0;
-            float gridViewHeight=8;
             if (lastWeekOfMonth == 5) {
                 mGridView.setNumColumns(35);
-                itemHeight=288;
 
             } else if (lastWeekOfMonth == 6) {
                 mGridView.setNumColumns(42);
-                itemHeight=240;
             }
 
             // gridView의 행 개수를 7로 설정
             mGridView.setNumColumns(7);
 
             /* 캘린더 어댑터에 해당 달의 날짜 리스트, 클릭 리스너 설정 */
-            mCalendarAdapter = new CalendarAdapter(dayInfos, itemHeight);
+            mCalendarAdapter = new CalendarAdapter(dayInfos);
             mCalendarAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View v, int position) {
                     int day=((DayInfo)mCalendarAdapter.getItem(position)).getDay();
                     ShowCalDayDialog dialog =
                             new ShowCalDayDialog(getContext(), mSelectedYear, mSelectedMonth, day);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
                 }
             });

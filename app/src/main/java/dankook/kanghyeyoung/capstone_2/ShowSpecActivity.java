@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -52,7 +54,6 @@ public class ShowSpecActivity extends AppCompatActivity {
     TextView mTextViewType;
     TextView mTextViewCat;
     TextView mTextViewDate;
-    Button mButtonDate;
     Button mButtonDelete;
     Button mButtonModify;
     LinearLayout mLayoutCat;
@@ -77,7 +78,6 @@ public class ShowSpecActivity extends AppCompatActivity {
         mInputPlace = findViewById(R.id.editText_place);
         mTextViewCat = findViewById(R.id.textView_cat);
         mTextViewDate = findViewById(R.id.textView_date);
-        mButtonDate = findViewById(R.id.button_date);
         mButtonDelete = findViewById(R.id.button_delete);
         mButtonModify = findViewById(R.id.button_modify);
         mLayoutCat = findViewById(R.id.layout_cat);
@@ -151,6 +151,7 @@ public class ShowSpecActivity extends AppCompatActivity {
                     final LinearLayout layoutSubcat = view.findViewById(R.id.layout_subcat);
 
                     final AlertDialog dialog = builder.create();
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                     // 서브 카테고리가 존재하는 메인 카테고리 선택 시 서브 카테고리 스피너도 나타나도록 함
                     spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -218,7 +219,7 @@ public class ShowSpecActivity extends AppCompatActivity {
         mTextViewDate.setText(DATE_TIME_FORMAT.format(mItem.getDate()));
 
         // 날짜 영역 클릭 시 날짜, 시간 재설정할 수 있는 다이얼로그 띄움
-        mButtonDate.setOnClickListener(new View.OnClickListener() {
+        mTextViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DateTimePickerDialog dateTimePickerDialog = new DateTimePickerDialog(ShowSpecActivity.this);
@@ -248,7 +249,7 @@ public class ShowSpecActivity extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
 
         } else {
-            findViewById(R.id.layout_detail).setVisibility(View.GONE);
+            findViewById(R.id.layout_specDetail).setVisibility(View.GONE);
         }
 
         /* 내역 삭제 */

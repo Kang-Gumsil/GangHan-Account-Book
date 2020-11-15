@@ -10,91 +10,74 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
-        app:cardCornerRadius="10dp"
-        android:background="@drawable/view_summery_background" >
+        android:background="#FFFFFF"
+        app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/textView_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
-                android:text="test일 test요일"
-                android:textColor="@color/textColor"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:text="test"
-                android:textColor="@color/textColor"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imageView_cat"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_margin="10dp"
+                android:padding="5dp"
                 android:src="@drawable/icon_down"
-                android:padding="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView_place"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="10dp"
-                android:text="test"
-                android:textColor="@color/textColor"
-                android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView_cat"
-                app:layout_constraintTop_toBottomOf="@+id/textView_date" />
 
-            <TextView
-                android:id="@+id/textView_cat"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:text="test"
-                android:textColor="@color/textColor"
-                android:textSize="14sp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView_cat"
-                app:layout_constraintTop_toBottomOf="@+id/textView_place" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textView_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_ac_b"
+                    android:letterSpacing="0.02"
+                    android:textColor="@color/textColor"
+                    android:textSize="18dp"
+                    android:textStyle="normal"
+                    tools:text="팔공티 단국대점"
+                    android:layout_marginBottom="3dp"/>
+
+                <TextView
+                    android:id="@+id/textView_cat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:letterSpacing="0.02"
+                    android:textColor="@color/textColor"
+                    android:textSize="12dp"
+                    android:textStyle="normal"
+                    tools:text="식비-카페/베이커리" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:text="test"
+                android:fontFamily="@font/nanum_square_ac_b"
+                android:letterSpacing="0.02"
                 android:textColor="@color/textColor"
-                android:textSize="24sp"
+                android:textSize="22dp"
+                android:textStyle="normal"
+                android:layout_marginRight="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView_type" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="-8000원" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

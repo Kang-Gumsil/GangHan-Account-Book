@@ -7,7 +7,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@null">
+    android:background="@color/background" >
+
+    <!-- 배경 -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="120dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="1000dp"
+        android:layout_height="500dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/_1" />
+    <!-- end of 배경 -->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,11 +65,11 @@
             <LinearLayout
                 android:id="@+id/layout1"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="15dp"
                 android:paddingHorizontal="15dp"
-                android:background="@drawable/view_stat_list_bar"
+                android:background="@drawable/stats_category_bar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pieChart" >
@@ -60,7 +79,10 @@
                     android:layout_weight="2"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|left"
-                    android:textSize="18sp"
+                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:textStyle="normal"
+                    android:textSize="16dp"
+                    android:letterSpacing="0.02"
                     android:textColor="#FFFFFF"
                     android:text="카테고리" />
 
@@ -69,7 +91,10 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|right"
-                    android:textSize="18sp"
+                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:textStyle="normal"
+                    android:textSize="16dp"
+                    android:letterSpacing="0.02"
                     android:textColor="#FFFFFF"
                     android:text="비율" />
 
@@ -78,7 +103,10 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|right"
-                    android:textSize="18sp"
+                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:textStyle="normal"
+                    android:textSize="16dp"
+                    android:letterSpacing="0.02"
                     android:textColor="#FFFFFF"
                     android:text="총액" />
             </LinearLayout>
@@ -90,12 +118,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="11dp"
-                android:paddingHorizontal="4dp"
+                android:paddingHorizontal="15dp"
                 android:paddingBottom="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout1"
-                android:background="@drawable/view_stat_list"/>
+                android:background="@drawable/stats_category"/>
             <!-- end of 리스트 내용 -->
             <!-- end of 리스트 -->
 

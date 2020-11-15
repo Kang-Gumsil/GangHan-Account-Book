@@ -1,116 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="380dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="20dp"
-    >
+    android:background="@drawable/dialog_round">
 
-    <!-- 제목 -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentTop="true"
-        android:text="날짜 선택"
-        android:textSize="20sp"
-        />
-
-    <!--dialog_date_time_picker 생성 -->
+    <!-- 날짜 선택 -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:id="@+id/linearLayout1"
+        android:layout_width="0dp"
+        android:layout_height="116dp"
+        android:layout_marginTop="30dp"
+        android:paddingHorizontal="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <NumberPicker
             android:id="@+id/picker_year"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1"/>
+            android:layout_width="60dp"
+            android:layout_height="match_parent" />
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
             android:text="년"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="16dp"
             android:textColor="@color/textColor"
-            android:layout_gravity="center_vertical" />
+            android:letterSpacing="0.02"/>
+
         <NumberPicker
             android:id="@+id/picker_month"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1" />
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"/>
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
             android:text="월"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="16dp"
             android:textColor="@color/textColor"
-            android:layout_gravity="center_vertical" />
+            android:letterSpacing="0.02"/>
+
         <NumberPicker
             android:id="@+id/picker_day"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1" />
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"/>
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
             android:text="일"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="16dp"
             android:textColor="@color/textColor"
-            android:layout_gravity="center_vertical" />
+            android:letterSpacing="0.02"/>
+
         <TextView
             android:id="@+id/textView_dayofweek"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
             android:text="(일)"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="16dp"
             android:textColor="@color/textColor"
-            android:layout_gravity="center_vertical" />
+            android:letterSpacing="0.02"/>
+
         <NumberPicker
             android:id="@+id/picker_hour"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1"/>
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"/>
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
             android:text=":"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="16dp"
             android:textColor="@color/textColor"
-            android:layout_gravity="center_vertical" />
+            android:letterSpacing="0.02"/>
+
         <NumberPicker
             android:id="@+id/picker_minute"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1"/>
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"/>
     </LinearLayout>
 
-    <!--확인, 취소 버튼 생성-->
+    <!-- 확인/취소 버튼 -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
-        <Button
-            android:id="@+id/button_cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="취소"
-            android:textColor="@color/textColor"
-            android:textSize="20sp"
-            android:layout_weight="1"
-            android:textAllCaps="false"
-            android:background="@color/colorPrimary"
-            android:layout_marginRight="2dp" />
+        android:background="@drawable/date_select_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+
         <Button
             android:id="@+id/button_confirm"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
             android:text="확인"
-            android:textColor="@color/textColor"
-            android:textAllCaps="false"
-            android:background="@color/colorPrimary"
-            android:layout_marginLeft="2dp" />
+            android:background="@null"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:letterSpacing="0.02" />
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:text="취소"
+            android:background="@null"
+            android:fontFamily="@font/nanum_square_ac_r"
+            android:textStyle="normal"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:letterSpacing="0.02" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
