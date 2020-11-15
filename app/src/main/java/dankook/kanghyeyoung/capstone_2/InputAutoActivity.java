@@ -65,6 +65,8 @@ public class InputAutoActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_GET_EMARTMALL = 105;
 
     private String mImageFilePath;
+    private String mFilePath;
+    private String mDestinationFileName;
     private Uri mPhotoUri;
     FirebaseFirestore db;
     SpecDetailAdapter mAdapter;
@@ -332,6 +334,8 @@ public class InputAutoActivity extends AppCompatActivity {
                 mImageViewReceipt.setImageURI(null);
                 mImageViewReceipt.setImageURI(imageUriResultCrop);
                 mImageFilePath = imageUriResultCrop.getPath();
+                mFilePath = mImageFilePath.replace(mDestinationFileName, "");
+                Log.d(TAG, "mImageFilePath:" + mImageFilePath);
 
                 // 리싸이클러뷰 어댑터 아이템 초기화
                 mAdapter.clear();
@@ -348,7 +352,7 @@ public class InputAutoActivity extends AppCompatActivity {
 
     /* Crop */
     private void startCrop(@NonNull Uri uri) {
-        String destinationFileName = "temp.jpg";
+        mDestinationFileName = "temp.jpg";
 
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(100);
@@ -358,7 +362,7 @@ public class InputAutoActivity extends AppCompatActivity {
         options.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
 
-        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
+        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), mDestinationFileName)));
         uCrop.withOptions(options);
         uCrop.start(this);
     }
@@ -380,7 +384,7 @@ public class InputAutoActivity extends AppCompatActivity {
     public void getReceiptOCR(PyObject module) {
         Log.d(TAG, "getReciptOCR 진입");
         try {
-            PyObject obj = module.callAttr("getOCRResult", "temp_image", mImageFilePath, "jpg");
+            PyObject obj = module.callAttr("getOCRResult", "temp_image", mFilePath, mDestinationFileName, "jpg");
             String result = obj.toString();
             Log.d(TAG, "OCR 결과:" + result);
 

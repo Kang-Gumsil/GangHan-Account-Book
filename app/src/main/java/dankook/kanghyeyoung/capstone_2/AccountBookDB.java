@@ -81,27 +81,6 @@ public class AccountBookDB {
                     specId + ", " + specDetail.getCatMain() + ", " + specDetail.getCatSub() + ", '" +
                     specDetail.getSpecName() + "', " + specDetail.getSpecPrice() + ", '" + spec.getPlace() + "', '" + spec.getDate() + "')");
         }
-
-//        if(spec.getSpecDetails().size()>0) {
-//            Cursor SpecDetailCursor = mAccountDB.mDB.rawQuery("SELECT * FROM SpecDetail " +
-//                    "WHERE spec_id='" + specId + "'", null);
-
-//            int DetailRecordCount=SpecDetailCursor.getCount();
-
-//            for (int j = 0; j < DetailRecordCount; j++) {
-//                SpecDetailCursor.moveToNext();
-//                int specDetailId = SpecDetailCursor.getInt(1);
-//                SpecDetail specDetail=spec.getSpecDetails().get(j);
-//                Log.d("AccountDB", "update before specDetailId="+specDetailId);
-//                Log.d("AccountDB", "before update specDetail CatMain:"+specDetail.getCatMain());
-//
-//                mAccountDB.mDB.execSQL("UPDATE SpecDetail SET cat_main=" + specDetail.getCatMain()
-//                        + ", cat_sub=" + specDetail.getCatSub() + ", spec_name='" + specDetail.getSpecName()
-//                        + "', spec_price=" + specDetail.getSpecPrice() + " WHERE spec_detail_id=" + specDetailId);
-//                Log.d("AccountDB", "update after specDetailId="+specDetailId+ ", cat:" + specDetail.getCatMain());
-//            }
-//            SpecDetailCursor.close();
-//        }
     }
 
     /* selectAllSpecs : 사용자가 지정한 연, 월에 대한 모든 메인 내역 ArrayList<Spec>으로 반환 */
@@ -174,6 +153,74 @@ public class AccountBookDB {
         }
         SpecCursor.close();
         return SpecItems;
+    }
+
+
+    public static ArrayList<Spec> getDaySpec(int year, int month, int day) {
+        ArrayList<Spec> specItems = new ArrayList<>();
+
+        if (mAccountDB == null) {
+            mAccountDB = new AccountBookDB();
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month - 1, day, 0, 0, 0); // Calendar 클래스에서 month는 0부터 시작함
+
+        // 해당 날짜의 23시 59분 59초까지의 Spec 데이터를 조회
+        String startDate = DATE_DB_FORMAT.format(cal.getTime());
+        cal.set(year, month - 1, day, 23, 59, 59);
+        String endDate = DATE_DB_FORMAT.format(cal.getTime());
+
+        Cursor specCursor = mAccountDB.mDB.rawQuery("SELECT spec_id, type, cat_main, cat_sub, price, place, date" +
+                " FROM Spec WHERE date BETWEEN '" + startDate + "' AND '" + endDate + "' ORDER BY date DESC", null);
+
+        int specCount = specCursor.getCount();
+        for (int i = 0; i < specCount; i++) {
+            specCursor.moveToNext();
+            int specId = specCursor.getInt(0);
+            int type = specCursor.getInt(1);
+            int catMain = specCursor.getInt(2);
+            int catSub = specCursor.getInt(3);
+            int price = specCursor.getInt(4);
+            String place = specCursor.getString(5);
+            Date date = new Date();
+            try {
+                date = DATE_DB_FORMAT.parse(specCursor.getString(6));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Spec spec = new Spec(specId, type, price, place, catMain, catSub, date);
+
+            if (catMain == Spec.CAT_MAIN_MULTI) {
+                Log.d("AccountBookDB", "catMain == CAT_MAIN_MULTI");
+                Log.d("AccountBookDB", "specId = " + specId);
+
+                Cursor specDetailCursor = mAccountDB.mDB.rawQuery("SELECT * FROM SpecDetail " +
+                        "WHERE spec_id='" + specId + "'", null);
+                int specDetailCount = specDetailCursor.getCount();
+                Log.d("AccountBookDB", "SpecDetailCursor.getCount() : " + specDetailCount);
+
+                for (int j = 0; j < specDetailCount; j++) {
+                    specDetailCursor.moveToNext();
+                    int specDetailId = specDetailCursor.getInt(1);
+                    // SpecDetail에 대한 cat_main, cat_sub는 위에서 사용하고 있는 Spec에 대한 변수명과 중복 => 앞에 d를 붙였음
+                    int dCatMain = specDetailCursor.getInt(2);
+                    int dCatSub = specDetailCursor.getInt(3);
+                    String specName = specDetailCursor.getString(4);
+                    int specPrice = specDetailCursor.getInt(5);
+
+                    SpecDetail specDetailItem = new SpecDetail(specId, specDetailId, dCatMain, dCatSub, specPrice, specName, place, date);
+                    spec.addSpecDetail(specDetailItem);
+                }
+                specDetailCursor.close();
+            }
+            Log.d("AccountBookDB", "getDaySpec:" + i + " : " + specId + ", " + catMain + ", " +
+                    catSub + ", " + type + ", " + price + ", " + place + ", " + date + ", " + spec.getSpecDetails().size());
+            specItems.add(spec);
+        }
+        specCursor.close();
+        return specItems;
     }
 
     /* getSumOfDay : 지정한 날짜에 대한 소비/지출 합산 금액 포함한 DayInfo 클래스 반환 */
@@ -308,17 +355,6 @@ public class AccountBookDB {
             sum += c.getInt(0);
             c.close();
         }
-
-//        ArrayList<Spec> items = selectAllSpecs(year, month);
-//        int count = items.size();
-//        int sum = 0;
-//
-//        for(int i=0; i<count; i++) {
-//            // 수입 / 지출의 합
-//            if(items.get(i).getType() == type) {
-//                sum += items.get(i).getPrice();
-//            }
-//        }
 
         Log.d("테스트", "연" + year + "월" + month + "합계" + sum);
         return sum;
