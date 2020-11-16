@@ -154,7 +154,7 @@ public class MainSpecFragment extends Fragment implements MainFragment {
 
         /* 날짜 표시 */
         Calendar calendar=Calendar.getInstance();
-        calendar.set(mSelectedYear, mSelectedMonth+1, day);
+        calendar.set(mSelectedYear, mSelectedMonth-1, day);
         textView.setText(YEAR_MONTH_FORMAT.format(new Date(calendar.getTimeInMillis())));
 
         /* specAdapter 생성 */

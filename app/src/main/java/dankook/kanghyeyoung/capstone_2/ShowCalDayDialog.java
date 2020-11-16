@@ -53,7 +53,7 @@ public class ShowCalDayDialog extends Dialog {
 
         /* main_cat 텍스트뷰 설정 */
         Calendar calendar=Calendar.getInstance();
-        calendar.set(mSelectedYear, mSelectedMonth+1, mSelectedDay);
+        calendar.set(mSelectedYear, mSelectedMonth-1, mSelectedDay);
         textViewCatMain.setText(YEAR_MONTH_FORMAT.format(new Date(calendar.getTimeInMillis())));
 
         /* specAdapter, onItemClickListener 설정 */
