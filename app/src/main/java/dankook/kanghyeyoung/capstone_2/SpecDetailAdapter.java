@@ -1,6 +1,9 @@
 package dankook.kanghyeyoung.capstone_2;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -149,19 +152,32 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
             textViewCat.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
                     Log.d("SpecDetailAdapter", "textViewCat Clicked");
-                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(mContext);
-                    View view = LayoutInflater.from(mContext)
-                            .inflate(R.layout.dialog_category_select, null, false);
-                    builder.setView(view);
+
+
+//                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(mContext);
+////                    View view = LayoutInflater.from(mContext)
+////                            .inflate(R.layout.dialog_category_select, null, false);
+////                    builder.setView(view);
+////
+////                    // 다이얼로그 레이아웃의 view 참조
+////                    final Button buttonRegister = view.findViewById(R.id.button_register);
+////                    final Button buttonCancel = view.findViewById(R.id.button_cancel);
+////                    final Spinner spinnerCat = view.findViewById(R.id.spinner_cat);
+////                    final Spinner spinnerSubcat = view.findViewById(R.id.spinner_subcat);
+////                    final LinearLayout layoutSubcat = view.findViewById(R.id.layout_subcat);
+////
+////                    final AlertDialog dialog = builder.create();
+
+                    final Dialog dialog=new Dialog(mContext);
+                    dialog.setContentView(R.layout.dialog_category_select);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                     // 다이얼로그 레이아웃의 view 참조
-                    final Button buttonRegister = view.findViewById(R.id.button_register);
-                    final Button buttonCancel = view.findViewById(R.id.button_cancel);
-                    final Spinner spinnerCat = view.findViewById(R.id.spinner_cat);
-                    final Spinner spinnerSubcat = view.findViewById(R.id.spinner_subcat);
-                    final LinearLayout layoutSubcat = view.findViewById(R.id.layout_subcat);
-
-                    final AlertDialog dialog = builder.create();
+                    final Button buttonRegister = dialog.findViewById(R.id.button_register);
+                    final Button buttonCancel = dialog.findViewById(R.id.button_cancel);
+                    final Spinner spinnerCat = dialog.findViewById(R.id.spinner_cat);
+                    final Spinner spinnerSubcat = dialog.findViewById(R.id.spinner_subcat);
+                    final LinearLayout layoutSubcat = dialog.findViewById(R.id.layout_subcat);
 
                     // 서브 카테고리가 존재하는 메인 카테고리 선택 시 서브 카테고리 스피너도 나타나도록 함
                     spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -211,7 +227,8 @@ public class SpecDetailAdapter extends RecyclerView.Adapter<SpecDetailAdapter.Cu
                             int catSub = spinnerSubcat.getSelectedItemPosition() - 1;
 
                             String specName = inputSpecName.getText().toString();
-                            int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,", ""));
+                            int specPrice = Integer.parseInt(
+                                    inputSpecPrice.getText().toString().replaceAll("\\,", ""));
                             SpecDetail specDetail = new SpecDetail(catMain, catSub, specName, specPrice);
 
                             Log.d("SpecDetailAdapter", "adapter position:"+getAdapterPosition());

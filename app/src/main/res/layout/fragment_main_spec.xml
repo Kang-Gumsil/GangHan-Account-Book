@@ -95,7 +95,7 @@
             app:srcCompat="@drawable/add_breakdown" />
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imageView_vertical_bar"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -112,13 +112,10 @@
             android:layout_height="0dp"
             android:background="@null"
             android:text="직접 입력"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="24dp"
-            android:textColor="#ffffff"
-            android:letterSpacing="0.02"
+            android:theme="@style/ConfirmButtonText"
+            android:textSize="23dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView1"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_vertical_bar"
             app:layout_constraintStart_toStartOf="@+id/imageView_spec_input"
             app:layout_constraintTop_toTopOf="@+id/imageView_spec_input" />
 
@@ -128,14 +125,11 @@
             android:layout_height="0dp"
             android:background="@null"
             android:text="영수증 촬영"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="24dp"
-            android:textColor="#ffffff"
-            android:letterSpacing="0.02"
+            android:theme="@style/ConfirmButtonText"
+            android:textSize="23dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView_spec_input"
-            app:layout_constraintStart_toEndOf="@+id/imageView1"
+            app:layout_constraintStart_toEndOf="@+id/imageView_vertical_bar"
             app:layout_constraintTop_toTopOf="@+id/imageView_spec_input" />
 
         <ImageView

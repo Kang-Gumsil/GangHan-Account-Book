@@ -1,11 +1,11 @@
 package dankook.kanghyeyoung.capstone_2;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
@@ -116,6 +116,7 @@ public class ShowSpecActivity extends AppCompatActivity {
             mTextViewType.setText("수입");
             mTypeFlag = TYPE_INCOME;
             mLayoutCat.setVisibility(View.GONE);
+
         } else {
             mTextViewType.setText("지출");
             mTypeFlag = TYPE_EXPENSE;
@@ -138,20 +139,17 @@ public class ShowSpecActivity extends AppCompatActivity {
             mTextViewCat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ShowSpecActivity.this);
-                    View view = LayoutInflater.from(ShowSpecActivity.this)
-                            .inflate(R.layout.dialog_category_select, null, false);
-                    builder.setView(view);
+
+                    final Dialog dialog=new Dialog(ShowSpecActivity.this);
+                    dialog.setContentView(R.layout.dialog_category_select);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                     // 다이얼로그 레이아웃의 view 참조
-                    final Button buttonRegister = view.findViewById(R.id.button_register);
-                    final Button buttonCancel = view.findViewById(R.id.button_cancel);
-                    final Spinner spinnerCat = view.findViewById(R.id.spinner_cat);
-                    final Spinner spinnerSubcat = view.findViewById(R.id.spinner_subcat);
-                    final LinearLayout layoutSubcat = view.findViewById(R.id.layout_subcat);
-
-                    final AlertDialog dialog = builder.create();
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    final Button buttonRegister = dialog.findViewById(R.id.button_register);
+                    final Button buttonCancel = dialog.findViewById(R.id.button_cancel);
+                    final Spinner spinnerCat = dialog.findViewById(R.id.spinner_cat);
+                    final Spinner spinnerSubcat = dialog.findViewById(R.id.spinner_subcat);
+                    final LinearLayout layoutSubcat = dialog.findViewById(R.id.layout_subcat);
 
                     // 서브 카테고리가 존재하는 메인 카테고리 선택 시 서브 카테고리 스피너도 나타나도록 함
                     spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -168,6 +166,7 @@ public class ShowSpecActivity extends AppCompatActivity {
                                 } else {
                                     layoutSubcat.setVisibility(View.GONE);
                                 }
+
                                 // mainCatStr에 해당하는 카테고리의 서브 카테고리 array id값을 가져옴
                                 int subCatArrayId = getResources().getIdentifier(mainCatStr, "array", getApplicationContext().getPackageName());
 
@@ -180,9 +179,7 @@ public class ShowSpecActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
+                        public void onNothingSelected(AdapterView<?> parent) {  }
                     });
 
                     // 취소 버튼 누를 시 다이얼로그 사라짐
@@ -210,6 +207,7 @@ public class ShowSpecActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     });
+
                     dialog.show();
                 }
             });

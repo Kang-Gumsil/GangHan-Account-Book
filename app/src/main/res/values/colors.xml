@@ -7,4 +7,5 @@
     <color name="background">#F2F2FA</color>
     <color name="income">#FFAAA9</color>
     <color name="expense">#A3AAFF</color>
+    <color name="white">#FFFFFF</color>
 </resources>

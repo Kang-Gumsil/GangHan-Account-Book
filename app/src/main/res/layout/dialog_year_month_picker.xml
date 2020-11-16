@@ -3,16 +3,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="280dp"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_round">
 
     <!-- 날짜 선택 -->
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/spinners"
         android:layout_width="0dp"
         android:layout_height="120dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,11 +22,7 @@
             android:id="@+id/numberPicker_year"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="16dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/SelectDateText" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,21 +31,13 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="년"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="20dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/SelectDateText" />
 
         <NumberPicker
             android:id="@+id/numberPicker_month"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="16dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/SelectDateText" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,11 +45,7 @@
             android:gravity="center"
             android:layout_marginLeft="5dp"
             android:text="월"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="20dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/SelectDateText" />
 
     </LinearLayout>
 
@@ -69,40 +53,34 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_margin="20dp"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="20dp"
         android:orientation="horizontal"
+        android:gravity="center"
         android:background="@drawable/date_select_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+        app:layout_constraintTop_toBottomOf="@+id/spinners">
 
         <Button
             android:id="@+id/button_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
+            android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="확인"
+            android:textSize="16dp"
             android:background="@null"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:letterSpacing="0.02" />
+            android:theme="@style/ConfirmButtonText" />
 
         <Button
             android:id="@+id/button_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="취소"
+            android:textSize="16dp"
             android:background="@null"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:letterSpacing="0.02" />
+            android:theme="@style/ConfirmButtonText" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

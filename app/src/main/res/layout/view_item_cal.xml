@@ -18,10 +18,7 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="dayInfo"
-        android:fontFamily="@font/nanum_square_ac_r"
-        android:textStyle="normal"
-        android:textSize="17dp"
-        android:textColor="#ffffff"
+        android:theme="@style/WhiteMediumText"
         android:letterSpacing="-0.04"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -15,7 +15,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.getDaySpec;
+import static dankook.kanghyeyoung.capstone_2._FORMAT.YEAR_MONTH_FORMAT;
 
 public class ShowCalDayDialog extends Dialog {
     private final static String TAG = "ShowCalDayDialog";
@@ -48,10 +52,12 @@ public class ShowCalDayDialog extends Dialog {
         mRecyclerView = findViewById(R.id.recyclerView);
 
         /* main_cat 텍스트뷰 설정 */
-        textViewCatMain.setText(mSelectedDay+"일 내역");
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(mSelectedYear, mSelectedMonth+1, mSelectedDay);
+        textViewCatMain.setText(YEAR_MONTH_FORMAT.format(new Date(calendar.getTimeInMillis())));
 
         /* specAdapter, onItemClickListener 설정 */
-        mSpecAdapter = new SpecAdapter();
+        mSpecAdapter = new SpecAdapter(mContext, true);
         mSpecAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {

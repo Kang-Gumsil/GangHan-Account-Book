@@ -54,11 +54,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="내역 추가"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:letterSpacing="0.28"
-            android:textColor="#FFFFFF"
-            android:textSize="16dp"
-            android:textStyle="normal" />
+            android:theme="@style/WhiteMediumText" />
 
         <ImageButton
             android:id="@+id/imageButton_close"
@@ -103,16 +99,15 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="25dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"><TextView
-                android:layout_width="105dp"
-                android:layout_height="35dp"
-                android:background="@drawable/___1"
-                android:fontFamily="@font/nanum_square_ac_r"
-                android:gravity="center"
-                android:text="분류"
-                android:textColor="#FFFFFF"
-                android:textSize="14dp"
-                android:textStyle="normal" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="105dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/___1"
+                    android:gravity="center"
+                    android:text="분류"
+                    android:theme="@style/WhiteSmallText" />
 
                 <Button
                     android:id="@+id/button_income"
@@ -121,12 +116,9 @@
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="center"
                     android:text="수입"
-                    android:textColor="@color/textColor"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/BlackSmallText" />
 
                 <LinearLayout
                     android:layout_width="2dp"
@@ -141,12 +133,9 @@
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="center"
                     android:text="지출"
-                    android:textColor="@color/textColor"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/BlackSmallText" />
             </LinearLayout>
             <!-- end of 분류(수입/지출) 선택 -->
 
@@ -162,26 +151,20 @@
                     android:layout_width="105dp"
                     android:layout_height="35dp"
                     android:background="@drawable/___1"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="center"
                     android:text="금액"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/WhiteSmallText" />
 
                 <EditText
                     android:id="@+id/editText_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:layout_gravity="bottom"
-                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:layout_gravity="center_vertical"
                     android:gravity="right"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:textColor="@color/textColor"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/BlackSmallText" />
             </LinearLayout>
             <!-- end of 금액 입력 -->
 
@@ -197,26 +180,20 @@
                     android:layout_width="105dp"
                     android:layout_height="35dp"
                     android:background="@drawable/___1"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="center"
                     android:text="거래처"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/WhiteSmallText" />
 
                 <EditText
                     android:id="@+id/editText_place"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:layout_gravity="bottom"
-                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:layout_gravity="center_vertical"
                     android:gravity="right"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColor="@color/textColor"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/BlackSmallText" />
             </LinearLayout>
             <!-- end of 거래처 입력 -->
 
@@ -233,12 +210,9 @@
                     android:layout_width="105dp"
                     android:layout_height="35dp"
                     android:background="@drawable/___1"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="center"
                     android:text="카테고리"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/WhiteSmallText" />
 
                 <Spinner
                     android:id="@+id/spinner_cat"
@@ -247,11 +221,9 @@
                     android:layout_marginLeft="30dp"
                     android:background="@null"
                     android:entries="@array/spinnerMain"
-                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:layout_gravity="center_vertical"
                     android:gravity="right"
-                    android:textColor="@color/textColor"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/BlackSmallText" />
             </LinearLayout>
             <!-- end of 지출 선택 시 메인 카테고리 선택 -->
 
@@ -269,12 +241,9 @@
                     android:layout_width="105dp"
                     android:layout_height="35dp"
                     android:background="@drawable/___1"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="center"
                     android:text="세부선택"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/WhiteSmallText" />
 
                 <Spinner
                     android:id="@+id/spinner_subcat"
@@ -283,11 +252,8 @@
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="30dp"
                     android:background="@null"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="right"
-                    android:textColor="@color/textColor"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/BlackSmallText" />
             </LinearLayout>
             <!-- end of 세부 카테고리 선택 -->
 
@@ -303,12 +269,9 @@
                     android:layout_width="105dp"
                     android:layout_height="35dp"
                     android:background="@drawable/___1"
-                    android:fontFamily="@font/nanum_square_ac_r"
                     android:gravity="center"
                     android:text="날짜"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/WhiteSmallText" />
 
                 <TextView
                     android:id="@+id/textView_date"
@@ -316,12 +279,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:background="@null"
-                    android:fontFamily="@font/nanum_square_ac_r"
+                    android:layout_gravity="center_vertical"
                     android:gravity="right"
                     android:text="yyyy년 MM월 dd일 (EEE) HH:mm"
-                    android:textColor="@color/textColor"
-                    android:textSize="14dp"
-                    android:textStyle="normal" />
+                    android:theme="@style/BlackSmallText" />
 
             </LinearLayout>
             <!-- end of 날짜 선택 -->
@@ -339,101 +300,84 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/__2"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/button_register"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.313"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
-            app:layout_constraintVertical_bias="1.0">
-
-            <!-- 내부내역 바 -->
-            <LinearLayout
-                android:id="@+id/linearLayout4"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/_2"
-                android:orientation="horizontal"
-                android:paddingHorizontal="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/nanum_square_ac_r"
-                    android:gravity="center_vertical|left"
-                    android:letterSpacing="0.02"
-                    android:text="카테고리"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nanum_square_ac_r"
-                    android:gravity="center_vertical|right"
-                    android:letterSpacing="0.02"
-                    android:text="제품명"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nanum_square_ac_r"
-                    android:gravity="center_vertical|right"
-                    android:letterSpacing="0.02"
-                    android:text="가격"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="normal" />
-            </LinearLayout>
-            <!-- end of 내부내역 바 -->
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="5dp">
+                android:paddingBottom="10dp"
+                android:background="@drawable/__2">
 
+                <!-- 세부내역 바 -->
+                <LinearLayout
+                    android:id="@+id/detail_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/_2"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical|left"
+                        android:text="카테고리"
+                        android:theme="@style/WhiteMediumText" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:text="제품명"
+                        android:theme="@style/WhiteMediumText" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:text="가격"
+                        android:theme="@style/WhiteMediumText" />
+                </LinearLayout>
+                <!-- end of 내부내역 바 -->
+
+                <!-- 세부내역 -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="15dp"
-                    android:layout_marginBottom="30dp"
-                    app:layout_constraintBottom_toTopOf="@+id/button_add"
+                    android:paddingHorizontal="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/detail_bar" />
 
                 <Button
                     android:id="@+id/button_add"
                     android:layout_width="150dp"
                     android:layout_height="35dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginTop="10dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/add_button"
-                    android:fontFamily="@font/nanum_square_ac_r"
-                    android:letterSpacing="0.02"
+                    android:theme="@style/ConfirmButtonText"
                     android:text="세부내역 추가"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="14dp"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+                <!-- end of 세부내역 -->
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
         <!-- end of 세부내역 -->
@@ -446,12 +390,8 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/fin_button_round"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:letterSpacing="0.02"
             android:text="등록하기"
-            android:textColor="#ffffff"
-            android:textSize="25dp"
-            android:textStyle="normal"
+            android:theme="@style/ConfirmButtonText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

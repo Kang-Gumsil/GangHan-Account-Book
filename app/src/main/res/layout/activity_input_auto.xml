@@ -30,7 +30,7 @@
 
     <!-- 제목 및 닫기 버튼 -->
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/titleLayout"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginHorizontal="19dp"
@@ -56,11 +56,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="내역 추가"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:letterSpacing="0.28"
-            android:textColor="#FFFFFF"
             android:textSize="16dp"
-            android:textStyle="normal" />
+            android:theme="@style/WhiteMediumText" />
 
         <ImageButton
             android:id="@+id/imageButton_close"
@@ -74,28 +71,29 @@
     <!-- end of 제목 및 닫기 버튼 -->
 
     <!-- 내역 입력 -->
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/view_calendar"
+        android:layout_margin="15dp"
         android:orientation="vertical"
-        android:paddingTop="15dp"
+        android:background="@drawable/view_calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+        app:layout_constraintTop_toBottomOf="@+id/titleLayout">
 
         <!-- 사진 및 Spec 정보  -->
         <LinearLayout
+            android:id="@+id/spec_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageView_receipt"
@@ -103,14 +101,14 @@
                 android:layout_height="250dp"
                 android:layout_weight="2"
                 android:background="@drawable/__1"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter" />
 
             <!-- Spec 정보 담는 LinearLayout -->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
+                android:layout_weight="3"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -124,27 +122,22 @@
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="30dp"
+                        android:background="@drawable/___1"
                         android:gravity="center"
                         android:text="분류"
-                        android:background="@drawable/___1"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14dp" />
+                        android:theme="@style/WhiteSmallText" />/>
 
                     <TextView
                         android:id="@+id/textView_type"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|right"
+                        android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:layout_gravity="bottom"
-                        android:gravity="center_vertical|right"
                         android:text="지출"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="@color/textColor"
-                        android:textSize="14dp" />
+                        android:theme="@style/BlackSmallText" />
                 </LinearLayout>
                 <!-- end of 분류(수입/지출) 선택 -->
 
@@ -161,24 +154,18 @@
                         android:background="@drawable/___1"
                         android:gravity="center"
                         android:text="금액"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14dp" />
+                        android:theme="@style/WhiteSmallText" />
 
                     <EditText
                         android:id="@+id/textView_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|right"
                         android:layout_marginLeft="15dp"
-                        android:layout_gravity="bottom"
-                        android:gravity="right"
                         android:inputType="number"
                         android:maxLines="1"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="@color/textColor"
-                        android:textSize="14dp" />
+                        android:theme="@style/BlackSmallText" />
                 </LinearLayout>
                 <!-- end of 금액 입력 -->
 
@@ -195,24 +182,18 @@
                         android:background="@drawable/___1"
                         android:gravity="center"
                         android:text="거래처"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14dp" />
+                        android:theme="@style/WhiteSmallText" />
 
                     <EditText
                         android:id="@+id/textView_place"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|right"
                         android:layout_marginLeft="15dp"
-                        android:layout_gravity="bottom"
-                        android:gravity="right"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="@color/textColor"
-                        android:textSize="14dp" />
+                        android:theme="@style/BlackSmallText" />
                 </LinearLayout>
                 <!-- end of 거래처 입력 -->
 
@@ -230,24 +211,18 @@
                         android:background="@drawable/___1"
                         android:gravity="center"
                         android:text="카테고리"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14dp" />
+                        android:theme="@style/WhiteSmallText" />
 
                     <EditText
                         android:id="@+id/textView_cat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|right"
                         android:layout_marginLeft="15dp"
-                        android:layout_gravity="bottom"
-                        android:gravity="right"
                         android:inputType="number"
                         android:maxLines="1"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="@color/textColor"
-                        android:textSize="14dp" />
+                        android:theme="@style/BlackSmallText" />
                 </LinearLayout>
                 <!-- end of 카테고리 입력 -->
 
@@ -264,48 +239,43 @@
                         android:background="@drawable/___1"
                         android:gravity="center"
                         android:text="날짜"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14dp" />
+                        android:theme="@style/WhiteSmallText" />
 
                     <TextView
                         android:id="@+id/textView_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:gravity="right"
+                        android:layout_marginLeft="12dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|right"
                         android:text="yyyy년 MM월 dd일\n(EEE) HH:mm"
-                        android:fontFamily="@font/nanum_square_ac_r"
-                        android:textStyle="normal"
-                        android:textColor="@color/textColor"
-                        android:textSize="13dp" />
+                        android:textSize="13dp"
+                        android:theme="@style/BlackSmallText" />
                 </LinearLayout>
                 <!-- end of 날짜 선택 -->
             </LinearLayout>
         </LinearLayout>
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- 세부 내역 -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintTop_toBottomOf="@+id/spec_contents" >
 
-            <!-- 세부 내역 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/__2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout3">
+                android:layout_height="wrap_content"
+                android:background="@drawable/__2" >
 
                 <!-- 내부내역 바 -->
                 <LinearLayout
-                    android:id="@+id/linearLayout4"
+                    android:id="@+id/spec_datail_bar"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/_2"
@@ -321,11 +291,8 @@
                         android:layout_weight="2"
                         android:fontFamily="@font/nanum_square_ac_r"
                         android:gravity="center_vertical|left"
-                        android:letterSpacing="0.02"
                         android:text="카테고리"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16dp"
-                        android:textStyle="normal" />
+                        android:theme="@style/WhiteMediumText" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -333,11 +300,8 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/nanum_square_ac_r"
                         android:gravity="center_vertical|right"
-                        android:letterSpacing="0.02"
                         android:text="제품명"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16dp"
-                        android:textStyle="normal" />
+                        android:theme="@style/WhiteMediumText" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -345,23 +309,20 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/nanum_square_ac_r"
                         android:gravity="center_vertical|right"
-                        android:letterSpacing="0.02"
                         android:text="가격"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16dp"
-                        android:textStyle="normal" />
+                        android:theme="@style/WhiteMediumText" />
                 </LinearLayout>
                 <!-- end of 내부내역 바 -->
 
                 <ScrollView
                     android:id="@+id/scrollView"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:paddingHorizontal="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+                    app:layout_constraintTop_toBottomOf="@+id/spec_datail_bar">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -372,68 +333,60 @@
                             android:id="@+id/recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="5dp"/>
+                            android:paddingBottom="5dp" />
                     </LinearLayout>
                 </ScrollView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <!-- end of 세부 내역 -->
+        </LinearLayout>
+        <!-- end of 세부 내역 -->
 
-            <!-- 다시찍기 / 등록 버튼 -->
-            <LinearLayout
-                android:id="@+id/linearLayout3"
+        <!-- 사진 입력 / 등록 버튼 -->
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/fin_button"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/button_addImage"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/fin_button"
-                android:orientation="horizontal"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:text="사진입력"
+                android:theme="@style/ConfirmButtonText"/>
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" >
+                app:layout_constraintEnd_toEndOf="@+id/imageView_spec_input"
+                app:layout_constraintStart_toStartOf="@+id/imageView_spec_input"
+                app:layout_constraintTop_toTopOf="@+id/imageView_spec_input"
+                app:srcCompat="@drawable/view_receipt_input_vertical" />
 
-                <Button
-                    android:id="@+id/button_addImage"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:text="사진입력"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/nanum_square_ac_r"
-                    android:textStyle="normal"
-                    android:textSize="20dp"
-                    android:letterSpacing="0.02"/>
+            <Button
+                android:id="@+id/button_register"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:text="등록하기"
+                android:theme="@style/ConfirmButtonText"/>
+        </LinearLayout>
+        <!-- end of 다시찍기 / 등록 버튼 -->
 
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView_spec_input"
-                    app:layout_constraintStart_toStartOf="@+id/imageView_spec_input"
-                    app:layout_constraintTop_toTopOf="@+id/imageView_spec_input"
-                    app:srcCompat="@drawable/view_receipt_input_vertical" />
-
-                <Button
-                    android:id="@+id/button_register"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:text="등록하기"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/nanum_square_ac_r"
-                    android:textStyle="normal"
-                    android:textSize="20dp"
-                    android:letterSpacing="0.02"/>
-            </LinearLayout>
-            <!-- end of 다시찍기 / 등록 버튼 -->
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- end of 내역 입력 -->
 
 

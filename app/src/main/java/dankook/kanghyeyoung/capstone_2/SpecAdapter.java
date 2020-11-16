@@ -1,6 +1,8 @@
 package dankook.kanghyeyoung.capstone_2;
 
 import android.content.Context;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,13 @@ import static dankook.kanghyeyoung.capstone_2._IMAGE.CAT_IMAGE;
 public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
     Context mContext;
     View mItemView;
+    boolean mIsDialog;
     ArrayList<Spec> mItems=new ArrayList<Spec>();
+
+    public SpecAdapter(Context mContext, boolean isDialog) {
+        this.mContext = mContext;
+        mIsDialog=isDialog;
+    }
 
     /* 리스너 객체 참조를 저장하는 변수 */
     private OnItemClickListener mItemClickListener=null;
@@ -116,6 +124,15 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
             int catMain=item.getCatMain();
             mTextViewCat.setText(item.getCatStr());
             mImageViewCat.setImageResource(CAT_IMAGE[catMain]);
+
+            // dialog일 경우, 카테고리 아이콘 없애고 폰트크기 줄이기
+            if (mIsDialog==true) {
+                mImageViewCat.setVisibility(View.GONE);
+                mTextViewPlace.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15f);
+                mTextViewCat.setTextSize(TypedValue.COMPLEX_UNIT_DIP,  12f);
+                mTextViewPrice.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
+                mItemView.findViewById(R.id.constraintLayout).setPadding(0, 30, 30, 30);
+            }
         }
     }
 }

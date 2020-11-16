@@ -29,8 +29,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import static dankook.kanghyeyoung.capstone_2.AccountBookDB.getDaySpec;
+import static dankook.kanghyeyoung.capstone_2._FORMAT.YEAR_MONTH_FORMAT;
 
 public class MainSpecFragment extends Fragment implements MainFragment {
     private static final String TAG = "MainSpecFragment";
@@ -146,13 +148,17 @@ public class MainSpecFragment extends Fragment implements MainFragment {
 
     public void addRecyclerView(ArrayList<Spec> items, int day) {
 
-        /* 날짜 및 리사이클러뷰 화면에 추가 */
+        /* inflate 및 view 참조 */
         ViewGroup rootView= (ViewGroup) getLayoutInflater().inflate(R.layout.view_spec_day, null, false);
         TextView textView=rootView.findViewById(R.id.textView_day);
-        textView.setText(day+"일 내역");
+
+        /* 날짜 표시 */
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(mSelectedYear, mSelectedMonth+1, day);
+        textView.setText(YEAR_MONTH_FORMAT.format(new Date(calendar.getTimeInMillis())));
 
         /* specAdapter 생성 */
-        final SpecAdapter specAdapter = new SpecAdapter();
+        final SpecAdapter specAdapter = new SpecAdapter(mContext, false);
         specAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {

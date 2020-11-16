@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/dialog_round">
@@ -15,24 +15,23 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:text="카테고리"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="18dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/BlackMediumText" />
 
         <Spinner
             android:id="@+id/spinner_detail_cat"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:entries="@array/spinnerDetailMain" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:entries="@array/spinnerDetailMain"
+            android:theme="@style/BlackMediumText" />/>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_detail_subcat"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
@@ -42,20 +41,18 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:text="세부 카테고리"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="18dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/BlackMediumText" />
 
         <Spinner
             android:id="@+id/spinner_detail_subcat"
             android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_marginLeft="15dp"
+            android:theme="@style/BlackMediumText" />/>
     </LinearLayout>
 
     <LinearLayout
@@ -67,27 +64,20 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:text="내역명"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="18dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/BlackMediumText" />
 
         <EditText
             android:id="@+id/editText_specName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="18dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:gravity="bottom"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:theme="@style/BlackMediumText" />
     </LinearLayout>
 
     <LinearLayout
@@ -99,27 +89,20 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:text="가격"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="18dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"/>
+            android:theme="@style/BlackMediumText" />
 
         <EditText
             android:id="@+id/editText_specPrice"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="18dp"
-            android:textColor="@color/textColor"
-            android:letterSpacing="0.02"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:gravity="bottom"
-            android:inputType="number" />
+            android:inputType="number"
+            android:theme="@style/BlackMediumText" />
 
     </LinearLayout>
 
@@ -127,37 +110,26 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_margin="15dp"
         android:background="@drawable/date_select_button">
 
         <Button
             android:id="@+id/button_detail_register"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="등록"
             android:background="@null"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:letterSpacing="0.02" />
+            android:theme="@style/ConfirmButtonText" />
 
         <Button
             android:id="@+id/button_detail_cancel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="취소"
             android:background="@null"
-            android:fontFamily="@font/nanum_square_ac_r"
-            android:textStyle="normal"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:letterSpacing="0.02" />
-
+            android:theme="@style/ConfirmButtonText" />
     </LinearLayout>
 
 </LinearLayout>

@@ -2,60 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="6dp">
 
     <TextView
         android:id="@+id/textView_cat"
         android:layout_width="0dp"
-        android:layout_weight="2.8"
+        android:layout_weight="3"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:maxLines="1"
         android:background="@null"
-        android:gravity="left"
-        android:textSize="13sp"
-        android:textColor="@color/textColor" />
+        android:theme="@style/BlackVerySmallText" />
 
     <EditText
         android:id="@+id/editText_specName"
         android:layout_width="0dp"
-        android:layout_weight="4.7"
+        android:layout_weight="4"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:layout_marginLeft="10dp"
         android:gravity="center_vertical|left"
+        android:background="@null"
         android:inputType="text"
         android:maxLines="1"
-        android:paddingHorizontal="5dp"
-        android:textSize="13sp"
-        android:textColor="@color/textColor" />
+        android:theme="@style/BlackVerySmallText" />
 
     <EditText
         android:id="@+id/editText_specPrice"
         android:layout_width="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="2"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical|right"
         android:background="@null"
         android:inputType="number"
-        android:gravity="center_vertical|right"
         android:maxLines="1"
-        android:textColor="@color/textColor"
-        android:textSize="13sp" />
+        android:theme="@style/BlackVerySmallText" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|right"
-        android:textSize="13sp"
         android:text="원"
-        android:textColor="@color/textColor" />
+        android:theme="@style/BlackVerySmallText" />
 
     <ImageButton
         android:id="@+id/imageButton_delete"
-        android:layout_width="20dp"
+        android:layout_width="8dp"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
+        android:layout_gravity="left"
+        android:layout_marginLeft="5dp"
         android:scaleType="centerCrop"
-        android:padding="5dp"
-        android:background="#FFFFFFFF"
+        android:background="@null"
         android:src="@drawable/icon_close" />
 </LinearLayout>

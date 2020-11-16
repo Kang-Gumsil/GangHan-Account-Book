@@ -1,11 +1,11 @@
 package dankook.kanghyeyoung.capstone_2;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -109,8 +109,11 @@ public class InputManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mTypeFlag==-1||mTypeFlag==Spec.TYPE_EXPENSE) {
                     mTypeFlag=0;
-                    mButtonIncome.setTextColor(Color.parseColor("#ED7C7A"));
-                    mButtonSpend.setTextColor(Color.parseColor("#564E50"));
+                    mButtonIncome.setTextColor(getColor(R.color.colorPrimary));
+                    mButtonIncome.setTypeface(getResources().getFont(R.font.nanum_square_ac_b));
+
+                    mButtonSpend.setTextColor(getColor(R.color.textColor));
+                    mButtonSpend.setTypeface(getResources().getFont(R.font.nanum_square_ac_r));
                     mLayoutCat.setVisibility(View.GONE);
                     Log.d(TAG, "수입 버튼 선택됨");
                 }
@@ -123,8 +126,11 @@ public class InputManualActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mTypeFlag==-1||mTypeFlag==Spec.TYPE_INCOME) {
                     mTypeFlag=1;
-                    mButtonSpend.setTextColor(Color.parseColor("#ED7C7A"));
-                    mButtonIncome.setTextColor(Color.parseColor("#564E50"));
+                    mButtonSpend.setTextColor(getColor(R.color.colorPrimary));
+                    mButtonSpend.setTypeface(getResources().getFont(R.font.nanum_square_ac_b));
+
+                    mButtonIncome.setTextColor(getColor(R.color.textColor));
+                    mButtonIncome.setTypeface(getResources().getFont(R.font.nanum_square_ac_r));
                     mLayoutCat.setVisibility(View.VISIBLE);
                     Log.d(TAG, "지출 버튼 선택됨");
                 }
@@ -148,10 +154,9 @@ public class InputManualActivity extends AppCompatActivity {
                     } else {
                         mLayoutSpecDetail.setVisibility(View.INVISIBLE);
                     }
-                    if (position!=CAT_MAIN_ENTERTAIN && position!=CAT_MAIN_INTERIOR
-                            && position!=CAT_MAIN_OTHER && position!=CAT_MAIN_MULTI
-                            && position!=CAT_MAIN_INCOME) {
+                    if (Spec.getCatSubCount(position)>0) {
                         mLayoutSubCat.setVisibility(View.VISIBLE);
+
                     } else {
                         mLayoutSubCat.setVisibility(View.GONE);
                     }
@@ -202,29 +207,26 @@ public class InputManualActivity extends AppCompatActivity {
 
         /* 리싸이클러뷰에서 아이템간 구분선 추가 */
         DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(mRecyclerView.getContext(),new LinearLayoutManager(getApplicationContext()).getOrientation());
+                new DividerItemDecoration(mRecyclerView.getContext(),
+                        new LinearLayoutManager(getApplicationContext()).getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         /* SpecDetail 내역 추가 버튼을 누르면 다이얼로그를 통해 상세 내역 입력 */
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(InputManualActivity.this);
-                View view = LayoutInflater.from(InputManualActivity.this)
-                        .inflate(R.layout.dialog_input_manual, null, false);
-                builder.setView(view);
 
-                Button buttonDetailRegister = view.findViewById(R.id.button_detail_register);
-                Button buttonDetailCancel = view.findViewById(R.id.button_detail_cancel);
-                final Spinner spinnerDetailCat = view.findViewById(R.id.spinner_detail_cat);
-                final Spinner spinnerDetailSubcat = view.findViewById(R.id.spinner_detail_subcat);
-                final EditText inputSpecName = view.findViewById(R.id.editText_specName);
-                final EditText inputSpecPrice=view.findViewById(R.id.editText_specPrice);
-
-                final LinearLayout layoutDetailSubcat = view.findViewById(R.id.layout_specDetail);
-
-                final AlertDialog dialog = builder.create();
+                final Dialog dialog=new Dialog(InputManualActivity.this);
+                dialog.setContentView(R.layout.dialog_input_manual);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                final Button buttonDetailRegister = dialog.findViewById(R.id.button_detail_register);
+                final Button buttonDetailCancel = dialog.findViewById(R.id.button_detail_cancel);
+                final Spinner spinnerDetailCat = dialog.findViewById(R.id.spinner_detail_cat);
+                final Spinner spinnerDetailSubcat = dialog.findViewById(R.id.spinner_detail_subcat);
+                final EditText inputSpecName = dialog.findViewById(R.id.editText_specName);
+                final EditText inputSpecPrice=dialog.findViewById(R.id.editText_specPrice);
+                final LinearLayout layoutDetailSubcat = dialog.findViewById(R.id.layout_detail_subcat);
 
                 /* inputSpecPrice 1000단위 컴마 찍기 */
                 TextWatcher textWatcher2=new TextWatcher() {
@@ -235,7 +237,8 @@ public class InputManualActivity extends AppCompatActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if(!TextUtils.isEmpty(s.toString()) && !s.toString().equals(priceResult)) {
-                            priceResult = DECIMAL_FORMAT.format(Double.parseDouble(s.toString().replaceAll(",", "")));
+                            priceResult = DECIMAL_FORMAT.format(
+                                    Double.parseDouble(s.toString().replaceAll(",", "")));
                             inputSpecPrice.setText(priceResult);
                             inputSpecPrice.setSelection(priceResult.length());
                         }
@@ -253,10 +256,9 @@ public class InputManualActivity extends AppCompatActivity {
                         String name = spinnerDetailCat.getSelectedItem().toString();
                         if (position == 0) {
                             onNothingSelected(adapterView);
+
                         } else {
-                            if (position!=CAT_MAIN_ENTERTAIN && position!=CAT_MAIN_INTERIOR
-                                    && position!=CAT_MAIN_OTHER && position!=CAT_MAIN_MULTI
-                                    && position!=CAT_MAIN_INCOME) {
+                            if (Spec.getCatSubCount(position) > 0) {
                                 layoutDetailSubcat.setVisibility(View.VISIBLE);
                             } else {
                                 layoutDetailSubcat.setVisibility(View.GONE);
@@ -271,9 +273,7 @@ public class InputManualActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
+                    public void onNothingSelected(AdapterView<?> parent) { }
 
                 });
 
@@ -305,7 +305,8 @@ public class InputManualActivity extends AppCompatActivity {
                         }
 
                         String specName = inputSpecName.getText().toString();
-                        int specPrice = Integer.parseInt(inputSpecPrice.getText().toString().replaceAll("\\,",""));
+                        int specPrice = Integer.parseInt(
+                                inputSpecPrice.getText().toString().replaceAll("\\,",""));
 
                         SpecDetail specDetailItem;
 

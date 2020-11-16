@@ -2,6 +2,7 @@ package dankook.kanghyeyoung.capstone_2;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -101,12 +102,11 @@ public class MainStatFragment extends Fragment implements MainFragment {
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 5, 5, 5);
         mChart.setDrawHoleEnabled(true);
-
-        Legend legend = mChart.getLegend();
-        legend.setEnabled(false);
+        mChart.getLegend().setEnabled(false);
 
         mChart.setEntryLabelColor(COLOR_TEXT_INT);
-        mChart.setEntryLabelTextSize(18f);
+        mChart.setEntryLabelTextSize(16f);
+        mChart.setEntryLabelTypeface(getResources().getFont(R.font.nanum_square_ac_r));
 
         /* StatListAdapter, onItemClickListener 설정 */
         mStatMainCatListAdapter = new StatMainCatListAdapter(mSelectedYear, mSelectedMonth);
@@ -187,6 +187,7 @@ public class MainStatFragment extends Fragment implements MainFragment {
 
             // 파이차트 데이터셋 정의 -> 파이엔트리, 색, 여백 등 설정
             PieDataSet dataSet = new PieDataSet(entries, "카테고리별 소비 통계");
+            dataSet.setValueTypeface(getResources().getFont(R.font.nanum_square_ac_r));
             dataSet.setSliceSpace(3f);
             dataSet.setSelectionShift(30f);
             int chartColors[]={
@@ -212,7 +213,7 @@ public class MainStatFragment extends Fragment implements MainFragment {
 
             // 파이차트에 데이터 추가
             PieData data = new PieData(dataSet);
-            data.setValueTextSize(24f);
+            data.setValueTextSize(22f);
             data.setValueTextColor(COLOR_TEXT_INT);
             data.setValueFormatter(new PercentFormatter(mChart));
             mChart.setData(data);

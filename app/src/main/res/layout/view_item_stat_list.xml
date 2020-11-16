@@ -4,18 +4,14 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="5dp"
     android:paddingVertical="10dp">
+
     <TextView
         android:id="@+id/textView_cat"
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:fontFamily="@font/nanum_square_ac_r"
-        android:textStyle="normal"
-        android:textSize="15dp"
-        android:textColor="#665f62"
-        android:letterSpacing="0.02"
-        android:text="TextView" />
+        android:theme="@style/BlackSmallText" />
 
     <TextView
         android:id="@+id/textView_percent"
@@ -23,22 +19,13 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:fontFamily="@font/nanum_square_ac_r"
-        android:textStyle="normal"
-        android:textSize="15dp"
-        android:textColor="#665f62"
-        android:letterSpacing="0.02"
-        android:text="TextView" />
+        android:theme="@style/BlackSmallText" />
+
     <TextView
         android:id="@+id/textView_total"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:fontFamily="@font/nanum_square_ac_r"
-        android:textStyle="normal"
-        android:textSize="15dp"
-        android:textColor="#665f62"
-        android:letterSpacing="0.02"
-        android:text="TextView" />
+        android:theme="@style/BlackSmallText" />
 </LinearLayout>
