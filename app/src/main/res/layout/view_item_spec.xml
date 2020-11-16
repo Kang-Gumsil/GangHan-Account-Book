@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/BlackBoldText"
                 android:textSize="22dp"
+                android:letterSpacing="-0.02"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -129,7 +129,7 @@ public class SpecAdapter extends RecyclerView.Adapter<SpecAdapter.ViewHolder> {
             if (mIsDialog==true) {
                 mImageViewCat.setVisibility(View.GONE);
                 mTextViewPlace.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15f);
-                mTextViewCat.setTextSize(TypedValue.COMPLEX_UNIT_DIP,  12f);
+                mTextViewCat.setTextSize(TypedValue.COMPLEX_UNIT_DIP,  11f);
                 mTextViewPrice.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
                 mItemView.findViewById(R.id.constraintLayout).setPadding(0, 30, 30, 30);
             }
